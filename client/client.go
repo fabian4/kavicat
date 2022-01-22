@@ -22,16 +22,14 @@ func New() {
 	//	),
 	//	)
 
+	head := container.NewVBox(NewToolBar(), widget.NewSeparator())
+
+	bottom := container.NewVBox(widget.NewSeparator(), NewBottom())
+
 	split := container.NewHSplit(NewConnection(), NewWork())
 	split.Offset = 0.15
 
-	content := container.NewBorder(
-		container.NewVBox(NewToolBar(), widget.NewSeparator()),
-		container.NewVBox(widget.NewSeparator(), NewBottom()),
-		nil,
-		nil,
-		split,
-	)
+	content := container.NewBorder(head, bottom, nil, nil, split)
 
 	w.SetContent(content)
 
