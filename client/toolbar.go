@@ -12,9 +12,7 @@ func NewToolBar() fyne.CanvasObject {
 	toolbar := widget.NewToolbar(
 		widget.NewToolbarAction(theme.HomeIcon(), func() {}),
 		widget.NewToolbarSeparator(),
-		widget.NewToolbarAction(theme.ContentAddIcon(), func() {
-
-		}),
+		widget.NewToolbarAction(theme.ContentAddIcon(), newConnection),
 		widget.NewToolbarAction(theme.ContentCopyIcon(), func() {}),
 		widget.NewToolbarAction(theme.ContentPasteIcon(), func() {}),
 		widget.NewToolbarSpacer(),
@@ -24,4 +22,10 @@ func NewToolBar() fyne.CanvasObject {
 	)
 
 	return toolbar
+}
+
+func newConnection() {
+	widget.NewButton("Info", func() {
+		dialog.ShowInformation("Information", "You should know this thing...", win)
+	})
 }
