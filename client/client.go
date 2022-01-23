@@ -7,12 +7,24 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-func New() {
+type Client struct {
+	App    fyne.App
+	Window fyne.Window
+}
+
+func NewClient() *Client {
+	return &Client{}
+}
+
+func (client *Client) Build() {
 	a := app.NewWithID("github.com/fabian4/kavicat")
 	//a.Settings().SetTheme(myTheme.NewTheme())
 	w := a.NewWindow("kavicat")
 	w.Resize(fyne.NewSize(1000, 600))
 	w.CenterOnScreen()
+
+	client.App = a
+	client.Window = w
 
 	//w.SetMainMenu(
 	//	fyne.NewMainMenu(
@@ -22,7 +34,7 @@ func New() {
 	//	),
 	//	)
 
-	head := container.NewVBox(NewToolBar(), widget.NewSeparator())
+	head := container.NewVBox(NewToolBar(client), widget.NewSeparator())
 
 	bottom := container.NewVBox(widget.NewSeparator(), NewBottom())
 

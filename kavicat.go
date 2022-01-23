@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	client.New()
+	client.NewClient().Build()
 }
