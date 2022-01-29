@@ -26,22 +26,22 @@ func (client *Client) Build() {
 	client.App = a
 	client.Window = w
 
-	//w.SetMainMenu(
-	//	fyne.NewMainMenu(
-	//		fyne.NewMenu("one"),
-	//		fyne.NewMenu("two"),
-	//		fyne.NewMenu("three"),
-	//	),
-	//	)
+	w.SetMainMenu(
+		fyne.NewMainMenu(
+			fyne.NewMenu("main", false),
+			fyne.NewMenu("new connection"),
+			fyne.NewMenu("three"),
+		),
+	)
 
-	head := container.NewVBox(NewToolBar(client), widget.NewSeparator())
+	//head := container.NewVBox(NewToolBar(client), widget.NewSeparator())
 
 	bottom := container.NewVBox(widget.NewSeparator(), NewBottom())
 
 	split := container.NewHSplit(NewConnection(), NewWork())
 	split.Offset = 0.15
 
-	content := container.NewBorder(head, bottom, nil, nil, split)
+	content := container.NewBorder(nil, bottom, nil, nil, split)
 
 	w.SetContent(content)
 
