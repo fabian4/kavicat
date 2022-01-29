@@ -5,6 +5,7 @@ import (
 	"fyne.io/fyne/v2/data/validation"
 	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/widget"
+	"github.com/fabian4/kavicat/conn"
 )
 
 func NewMenu(client *Client) *fyne.MainMenu {
@@ -72,7 +73,12 @@ func newConnectionForRedis(client *Client) *fyne.MenuItem {
 			items,
 			func(bool bool) {
 				if bool {
-
+					conn.NewRedisConn(
+						host.Text,
+						port.Text,
+						auth.Text,
+						name.Text,
+					)
 				}
 			},
 			client.Window,
