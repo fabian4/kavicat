@@ -1,4 +1,4 @@
-package myTheme
+package customer
 
 import (
 	"fyne.io/fyne/v2"
@@ -6,13 +6,13 @@ import (
 	"image/color"
 )
 
-type myTheme struct{}
+type customer struct{}
 
-func NewTheme() *myTheme {
-	return &myTheme{}
+func NewTheme() *customer {
+	return &customer{}
 }
 
-func (myTheme) Color(c fyne.ThemeColorName, v fyne.ThemeVariant) color.Color {
+func (customer) Color(c fyne.ThemeColorName, v fyne.ThemeVariant) color.Color {
 	switch c {
 	case theme.ColorNameBackground:
 		return color.NRGBA{R: 0x33, G: 0x31, B: 0x44, A: 0xb3}
@@ -47,7 +47,7 @@ func (myTheme) Color(c fyne.ThemeColorName, v fyne.ThemeVariant) color.Color {
 	}
 }
 
-func (myTheme) Font(s fyne.TextStyle) fyne.Resource {
+func (customer) Font(s fyne.TextStyle) fyne.Resource {
 	if s.Monospace {
 		return theme.DefaultTheme().Font(s)
 	}
@@ -63,11 +63,11 @@ func (myTheme) Font(s fyne.TextStyle) fyne.Resource {
 	return theme.DefaultTheme().Font(s)
 }
 
-func (myTheme) Icon(n fyne.ThemeIconName) fyne.Resource {
+func (customer) Icon(n fyne.ThemeIconName) fyne.Resource {
 	return theme.DefaultTheme().Icon(n)
 }
 
-func (myTheme) Size(s fyne.ThemeSizeName) float32 {
+func (customer) Size(s fyne.ThemeSizeName) float32 {
 	switch s {
 	case theme.SizeNameCaptionText:
 		return 11

@@ -18,7 +18,7 @@ func NewClient() *Client {
 
 func (client *Client) Build() {
 	a := app.NewWithID("github.com/fabian4/kavicat")
-	//a.Settings().SetTheme(myTheme.NewTheme())
+	//a.Settings().SetTheme(customer.NewTheme())
 	w := a.NewWindow("kavicat")
 	w.Resize(fyne.NewSize(1000, 600))
 	w.CenterOnScreen()
