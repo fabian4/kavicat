@@ -42,6 +42,7 @@ func newConn(client *Client) *fyne.Menu {
 	levelDB := fyne.NewMenuItem("For LevelDB", func() {})
 
 	badger := fyne.NewMenuItem("For Badger", func() {})
+
 	return fyne.NewMenu(
 		"connect",
 		redis,
