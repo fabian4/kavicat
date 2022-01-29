@@ -1,0 +1,21 @@
+package data
+
+import "github.com/go-redis/redis/v8"
+
+var redisConns = make(map[string]RedisConn)
+
+type RedisConn struct {
+	Host   string
+	Port   string
+	Auth   string
+	Name   string
+	Client *redis.Client
+}
+
+func GetRedisConn() map[string]RedisConn {
+	return redisConns
+}
+
+func AddRedisConn(redisConn RedisConn) {
+	redisConns[redisConn.Name] = redisConn
+}
