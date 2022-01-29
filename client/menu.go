@@ -40,10 +40,22 @@ func newConn(client *Client) *fyne.Menu {
 func newConnectionForRedis(client *Client) *fyne.MenuItem {
 
 	host := widget.NewEntry()
-	host.Validator = validation
+	host.PlaceHolder = "Input your Redis host here."
+	host.Validator = validation.NewRegexp(
+		"((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}",
+		"Host Invalid")
+
 	port := widget.NewEntry()
+	port.PlaceHolder = "Input your Redis port here."
+	port.Validator = validation.NewRegexp(
+		"^([0-9]|[1-9]\\d|[1-9]\\d{2}|[1-9]\\d{3}|[1-5]\\d{4}|6[0-4]\\d{3}|65[0-4]\\d{2}|655[0-2]\\d|6553[0-5])$",
+		"Port Invalid")
+
 	auth := widget.NewEntry()
+	auth.PlaceHolder = "Input your auth code if necessary."
+
 	name := widget.NewEntry()
+	name.PlaceHolder = "Name your connection here."
 
 	items := []*widget.FormItem{ // we can specify items in the constructor
 		{Text: "Host", Widget: host},
@@ -59,7 +71,7 @@ func newConnectionForRedis(client *Client) *fyne.MenuItem {
 			"cancel",
 			items,
 			func(bool bool) {
-				println("connect")
+
 			},
 			client.Window,
 		)
