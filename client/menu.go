@@ -8,10 +8,11 @@ import (
 	"github.com/fabian4/kavicat/conn"
 )
 
-func NewMenu(client *Client) *fyne.MainMenu {
+func NewMenu() *fyne.MainMenu {
+
 	return fyne.NewMainMenu(
 		newHome(),
-		newConn(client),
+		newConn(),
 	)
 }
 
@@ -24,7 +25,7 @@ func newHome() *fyne.Menu {
 	)
 }
 
-func newConn(client *Client) *fyne.Menu {
+func newConn() *fyne.Menu {
 
 	levelDB := fyne.NewMenuItem("For LevelDB", func() {})
 
@@ -32,13 +33,13 @@ func newConn(client *Client) *fyne.Menu {
 
 	return fyne.NewMenu(
 		"connect",
-		newConnectionForRedis(client),
+		newConnectionForRedis(),
 		levelDB,
 		badger,
 	)
 }
 
-func newConnectionForRedis(client *Client) *fyne.MenuItem {
+func newConnectionForRedis() *fyne.MenuItem {
 
 	host := widget.NewEntry()
 	host.PlaceHolder = "Input your Redis host here."
@@ -81,7 +82,7 @@ func newConnectionForRedis(client *Client) *fyne.MenuItem {
 					)
 				}
 			},
-			client.Window,
+			GetWindow(),
 		)
 		form.Resize(fyne.NewSize(400, 300))
 		form.Show()
