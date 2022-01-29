@@ -52,13 +52,15 @@ func newConn(client *Client) *fyne.Menu {
 
 func newConnectionForRedis() []*widget.FormItem {
 
-	//entry := widget.NewEntry()
-	//textArea := widget.NewMultiLineEntry()
+	host := widget.NewEntry()
+	port := widget.NewEntry()
+	auth := widget.NewEntry()
+	name := widget.NewEntry()
 
 	return []*widget.FormItem{ // we can specify items in the constructor
-		{Text: "Host", Widget: widget.NewEntry()},
-		{Text: "Port", Widget: widget.NewEntry()},
-		{Text: "Auth", Widget: widget.NewEntry()},
-		{Text: "Name", Widget: widget.NewEntry()},
+		{Text: "Host", Widget: host},
+		{Text: "Port", Widget: port},
+		{Text: "Auth", Widget: auth},
+		{Text: "Name", Widget: name},
 	}
 }
