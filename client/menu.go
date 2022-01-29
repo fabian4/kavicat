@@ -71,7 +71,9 @@ func newConnectionForRedis(client *Client) *fyne.MenuItem {
 			"cancel",
 			items,
 			func(bool bool) {
+				if bool {
 
+				}
 			},
 			client.Window,
 		)
