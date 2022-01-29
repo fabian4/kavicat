@@ -26,13 +26,7 @@ func (client *Client) Build() {
 	client.App = a
 	client.Window = w
 
-	w.SetMainMenu(
-		fyne.NewMainMenu(
-			fyne.NewMenu("main", false),
-			fyne.NewMenu("new connection"),
-			fyne.NewMenu("three"),
-		),
-	)
+	w.SetMainMenu(NewMenu(client))
 
 	//head := container.NewVBox(NewToolBar(client), widget.NewSeparator())
 
