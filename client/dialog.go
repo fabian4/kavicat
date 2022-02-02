@@ -5,14 +5,9 @@ import (
 	"fyne.io/fyne/v2/dialog"
 )
 
-func Success(text string) {
-	success := dialog.NewInformation("Success", text, GetWindow())
-	success.Resize(fyne.NewSize(400, 300))
-	success.Show()
-}
+func Inform(args ...string) {
 
-func Fail(text string) {
-	fail := dialog.NewInformation("Fail", text, GetWindow())
-	fail.Resize(fyne.NewSize(400, 300))
-	fail.Show()
+	success := dialog.NewInformation(args[0], args[1], GetWindow())
+	success.Resize(fyne.NewSize(200, 150))
+	success.Show()
 }

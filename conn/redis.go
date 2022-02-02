@@ -2,8 +2,8 @@ package conn
 
 import (
 	"context"
-	"github.com/fabian4/kavicat/client"
 	"github.com/fabian4/kavicat/data"
+	"github.com/fabian4/kavicat/event"
 	"github.com/go-redis/redis/v8"
 )
 
@@ -21,13 +21,14 @@ func NewRedisConn(redisConn *data.RedisConn) {
 
 	err := rdc.Set(ctx, "key", "value", 0).Err()
 	if err != nil {
-		client.Fail("connect fail")
+		event.Emit("inform", "Connection Fail", err.Error())
+		return
 	} else {
-		client.Success("connect success")
+		event.Emit("inform", "Connected", redisConn.Host+":"+redisConn.Port)
 	}
 
 	if redisConn.Name == "" {
-		redisConn.Name = redisConn.Host + ":" + redisConn.Name
+		redisConn.Name = redisConn.Host + ":" + redisConn.Port
 	}
 
 	data.AddRedisConn(*redisConn)

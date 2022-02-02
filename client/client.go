@@ -5,6 +5,7 @@ import (
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
+	"github.com/fabian4/kavicat/event"
 )
 
 var (
@@ -13,9 +14,9 @@ var (
 )
 
 func Init() {
-	App := app.NewWithID("github.com/fabian4/kavicat")
+	App = app.NewWithID("github.com/fabian4/kavicat")
 	//App.Settings().SetTheme(customer.NewTheme())
-	Window := App.NewWindow("kavicat")
+	Window = App.NewWindow("kavicat")
 	Window.Resize(fyne.NewSize(1000, 600))
 	Window.CenterOnScreen()
 	Window.SetMainMenu(NewMenu())
@@ -24,6 +25,8 @@ func Init() {
 
 	split := container.NewHSplit(NewConnection(), NewWork())
 	split.Offset = 0.15
+
+	event.Register("inform", Inform)
 
 	content := container.NewBorder(nil, bottom, nil, nil, split)
 

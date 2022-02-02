@@ -19,7 +19,9 @@ func NewMenu() *fyne.MainMenu {
 
 func newHome() *fyne.Menu {
 	aa := fyne.NewMenuItem("aa", func() {
-
+		success := dialog.NewInformation("Success", "success", GetWindow())
+		success.Resize(fyne.NewSize(200, 150))
+		success.Show()
 	})
 	aa.IsQuit = true
 	return fyne.NewMenu(
