@@ -25,7 +25,7 @@ func newHome() *fyne.Menu {
 	})
 	aa.IsQuit = true
 	return fyne.NewMenu(
-		"home",
+		"Home",
 		aa,
 	)
 }
@@ -37,14 +37,14 @@ func newConn() *fyne.Menu {
 	badger := fyne.NewMenuItem("For Badger", func() {})
 
 	return fyne.NewMenu(
-		"connect",
-		newConnectionForRedis(),
+		"New",
+		fyne.NewMenuItem("For Redis", newConnectionForRedis),
 		levelDB,
 		badger,
 	)
 }
 
-func newConnectionForRedis() *fyne.MenuItem {
+func newConnectionForRedis() {
 
 	host := widget.NewEntry()
 	host.PlaceHolder = "Input your Redis host here."
@@ -58,7 +58,7 @@ func newConnectionForRedis() *fyne.MenuItem {
 		"^([0-9]|[1-9]\\d|[1-9]\\d{2}|[1-9]\\d{3}|[1-5]\\d{4}|6[0-4]\\d{3}|65[0-4]\\d{2}|655[0-2]\\d|6553[0-5])$",
 		"Port Invalid")
 
-	auth := widget.NewEntry()
+	auth := widget.NewPasswordEntry()
 	auth.PlaceHolder = "Input your auth code if necessary."
 
 	name := widget.NewEntry()
@@ -71,28 +71,23 @@ func newConnectionForRedis() *fyne.MenuItem {
 		{Text: "Name", Widget: name},
 	}
 
-	redis := fyne.NewMenuItem("For Redis", func() {
-		form := dialog.NewForm(
-			"connection for Redis",
-			"connect",
-			"cancel",
-			items,
-			func(bool bool) {
-				if bool {
-					conn.NewRedisConn(
-						&data.RedisConn{
-							Host: host.Text,
-							Port: port.Text,
-							Auth: auth.Text,
-							Name: name.Text,
-						})
-				}
-			},
-			GetWindow(),
-		)
-		form.Resize(fyne.NewSize(400, 300))
-		form.Show()
-	})
-
-	return redis
+	form := dialog.NewForm(
+		"connection for Redis",
+		"connect",
+		"cancel",
+		items,
+		func(bool bool) {
+			if bool {
+				conn.NewRedisConn(&data.RedisConn{
+					Host: host.Text,
+					Port: port.Text,
+					Auth: auth.Text,
+					Name: name.Text,
+				})
+			}
+		},
+		GetWindow(),
+	)
+	form.Resize(fyne.NewSize(400, 300))
+	form.Show()
 }

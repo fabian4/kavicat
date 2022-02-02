@@ -26,7 +26,8 @@ func Init() {
 	split := container.NewHSplit(NewConnection(), NewWork())
 	split.Offset = 0.15
 
-	event.Register("inform", Inform)
+	event.Register("establish_connection_fail", ConnectFail)
+	event.Register("establish_connection_success", ConnectSuccess)
 
 	content := container.NewBorder(nil, bottom, nil, nil, split)
 

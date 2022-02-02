@@ -21,15 +21,15 @@ func NewRedisConn(redisConn *data.RedisConn) {
 
 	err := rdc.Set(ctx, "key", "value", 0).Err()
 	if err != nil {
-		event.Emit("inform", "Connection Fail", err.Error())
-		return
+		event.Emit("establish_connection_fail", "Connection Fail", err.Error(), "redis")
 	} else {
-		event.Emit("inform", "Connected", redisConn.Host+":"+redisConn.Port)
-	}
+		event.Emit("establish_connection_success", "Connected", redisConn.Host+" : "+redisConn.Port)
 
-	if redisConn.Name == "" {
-		redisConn.Name = redisConn.Host + ":" + redisConn.Port
-	}
+		if redisConn.Name == "" {
+			redisConn.Name = redisConn.Host + ":" + redisConn.Port
+		}
 
-	data.AddRedisConn(*redisConn)
+		data.AddRedisConn(*redisConn)
+
+	}
 }

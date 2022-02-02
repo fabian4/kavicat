@@ -5,9 +5,19 @@ import (
 	"fyne.io/fyne/v2/dialog"
 )
 
-func Inform(args ...string) {
+func ConnectSuccess(args ...string) {
+	dialog := dialog.NewInformation(args[0], args[1], GetWindow())
+	dialog.Resize(fyne.NewSize(200, 150))
+	dialog.Show()
+}
 
-	success := dialog.NewInformation(args[0], args[1], GetWindow())
-	success.Resize(fyne.NewSize(200, 150))
-	success.Show()
+func ConnectFail(args ...string) {
+	dialog := dialog.NewInformation(args[0], args[1], GetWindow())
+	dialog.Resize(fyne.NewSize(200, 150))
+	switch args[2] {
+	case "redis":
+		dialog.SetOnClosed(newConnectionForRedis)
+		break
+	}
+	dialog.Show()
 }
