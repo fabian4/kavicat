@@ -13,9 +13,9 @@ var (
 )
 
 func Init() {
-	App = app.NewWithID("github.com/fabian4/kavicat")
+	App := app.NewWithID("github.com/fabian4/kavicat")
 	//App.Settings().SetTheme(customer.NewTheme())
-	Window = App.NewWindow("kavicat")
+	Window := App.NewWindow("kavicat")
 	Window.Resize(fyne.NewSize(1000, 600))
 	Window.CenterOnScreen()
 	Window.SetMainMenu(NewMenu())

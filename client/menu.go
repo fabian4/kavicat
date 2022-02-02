@@ -18,7 +18,9 @@ func NewMenu() *fyne.MainMenu {
 }
 
 func newHome() *fyne.Menu {
-	aa := fyne.NewMenuItem("aa", func() {})
+	aa := fyne.NewMenuItem("aa", func() {
+
+	})
 	aa.IsQuit = true
 	return fyne.NewMenu(
 		"home",
