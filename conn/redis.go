@@ -28,6 +28,7 @@ func NewRedisConn(redisConn *data.RedisConn) {
 		DB:       0,
 	})
 
+	//todo: pick a test api
 	err := rdc.Set(ctx, "key", "value", 0).Err()
 	if err != nil {
 		event.Emit("connection_fail", "Connection Fail", err.Error(), "redis")

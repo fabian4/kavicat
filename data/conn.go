@@ -7,7 +7,14 @@ var (
 	conns         binding.StringList
 )
 
+func GetRedisConnkeysById(id int) string {
+	return redisConnKeys[id]
+}
+
 func GetRedisConnKeys() binding.StringList {
+	redisConnKeys = append(redisConnKeys, "aaaaaaaaaaa")
+	redisConnKeys = append(redisConnKeys, "bbbbbbbbbbb")
+	redisConnKeys = append(redisConnKeys, "ccccccccccc")
 	conns = binding.BindStringList(&redisConnKeys)
 	return conns
 }
