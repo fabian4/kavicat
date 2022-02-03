@@ -28,7 +28,7 @@ func NewRedisConn(redisConn *data.RedisConn) {
 		if redisConn.Name == "" {
 			redisConn.Name = redisConn.Host + ":" + redisConn.Port
 		}
-
+		redisConn.Client = rdc
 		data.AddRedisConn(*redisConn)
 
 	}

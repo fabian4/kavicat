@@ -17,5 +17,6 @@ func GetRedisConn() map[string]RedisConn {
 }
 
 func AddRedisConn(redisConn RedisConn) {
+	//todo: 已存在链接
 	redisConns[redisConn.Name] = redisConn
 }
