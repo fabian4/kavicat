@@ -13,7 +13,11 @@ type RedisConn struct {
 }
 
 func AddRedisConn(redisConn RedisConn) {
-	//todo: 已存在链接
 	redisConns[redisConn.Name] = redisConn
 	appendRedisConnkeys(redisConn.Name)
+}
+
+func HasRedisConn(name string) bool {
+	_, found := redisConns[name]
+	return found
 }
