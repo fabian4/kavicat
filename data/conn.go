@@ -1,22 +1,20 @@
 package data
 
-import "github.com/go-redis/redis/v8"
+import "fyne.io/fyne/v2/data/binding"
 
-var redisConns = make(map[string]RedisConn)
+var (
+	redisConnKeys []string
+	conns         binding.StringList
+)
 
-type RedisConn struct {
-	Host   string
-	Port   string
-	Auth   string
-	Name   string
-	Client *redis.Client
+func GetRedisConnKeys() binding.StringList {
+	redisConnKeys = append(redisConnKeys, "localhost")
+	redisConnKeys = append(redisConnKeys, "127.127.127.127:6379")
+	redisConnKeys = append(redisConnKeys, "localhost")
+	conns = binding.BindStringList(&redisConnKeys)
+	return conns
 }
 
-func GetRedisConn() map[string]RedisConn {
-	return redisConns
-}
-
-func AddRedisConn(redisConn RedisConn) {
-	//todo: 已存在链接
-	redisConns[redisConn.Name] = redisConn
+func appendRedisConnkeys(name string) {
+	_ = conns.Append(name)
 }

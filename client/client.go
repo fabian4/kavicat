@@ -23,8 +23,8 @@ func Init() {
 
 	bottom := container.NewVBox(widget.NewSeparator(), NewBottom())
 
-	split := container.NewHSplit(NewConnection(), NewWork())
-	split.Offset = 0.15
+	split := container.NewHSplit(NewList(), NewWork())
+	split.Offset = 0.2
 
 	event.Register("establish_connection_fail", ConnectFail)
 	event.Register("establish_connection_success", ConnectSuccess)
