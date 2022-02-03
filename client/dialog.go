@@ -5,13 +5,19 @@ import (
 	"fyne.io/fyne/v2/dialog"
 )
 
-func ConnectSuccess(args ...string) {
+func ConnectionSuccess(args ...string) {
 	dialog := dialog.NewInformation(args[0], args[1], GetWindow())
 	dialog.Resize(fyne.NewSize(200, 150))
 	dialog.Show()
 }
 
-func ConnectFail(args ...string) {
+func ConnectionExist(args ...string) {
+	dialog := dialog.NewInformation("Connection Exist", args[0], GetWindow())
+	dialog.Resize(fyne.NewSize(200, 150))
+	dialog.Show()
+}
+
+func ConnectionFail(args ...string) {
 	dialog := dialog.NewInformation(args[0], args[1], GetWindow())
 	dialog.Resize(fyne.NewSize(200, 150))
 	switch args[2] {

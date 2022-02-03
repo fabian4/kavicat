@@ -30,11 +30,11 @@ func NewRedisConn(redisConn *data.RedisConn) {
 
 	err := rdc.Set(ctx, "key", "value", 0).Err()
 	if err != nil {
-		event.Emit("establish_connection_fail", "Connection Fail", err.Error(), "redis")
+		event.Emit("connection_fail", "Connection Fail", err.Error(), "redis")
 		return
 	}
 
-	event.Emit("establish_connection_success", "Connected", redisConn.Host+" : "+redisConn.Port)
+	event.Emit("connection_success", "Connected", redisConn.Host+" : "+redisConn.Port)
 
 	redisConn.Client = rdc
 	data.AddRedisConn(*redisConn)
