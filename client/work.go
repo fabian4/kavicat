@@ -1,6 +1,7 @@
 package client
 
 import (
+	"fmt"
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/theme"
@@ -12,15 +13,79 @@ func NewWork() fyne.CanvasObject {
 
 	//return canvas.NewText("content", theme.ForegroundColor())
 
-	return container.NewBorder(newTop(), nil, nil, nil, newKeys())
+	return container.NewBorder(newHeadInfo(), nil, nil, nil, newKeys())
 }
 
-func newTop() fyne.CanvasObject {
-	return container.NewVBox(widget.NewLabel("================="), widget.NewSeparator())
+func newHeadInfo() fyne.CanvasObject {
+	selectEntry := widget.NewSelect(
+		[]string{
+			"DB-0",
+			"DB-1",
+			"DB-2",
+			"DB-3",
+			"DB-4",
+			"DB-5",
+			"DB-6",
+			"DB-7",
+			"DB-8",
+			"DB-9",
+			"DB-10",
+			"DB-11",
+			"DB-12",
+			"DB-13",
+			"DB-14",
+			"DB-15",
+		},
+		func(s string) {
+			fmt.Println("selected", s)
+		},
+	)
+	selectEntry.SetSelectedIndex(0)
+	//info := container.NewHBox(
+	//	widget.NewLabel("redis: 127.0.0.1:6379"),
+	//	widget.NewLabel("db:"),
+	//	selectEntry,
+	//)
+	//return container.NewVBox(info, widget.NewSeparator())
+
+	//rdc := redis.NewClient(&redis.Options{
+	//	Addr:     "127.0.0.1:6379",
+	//	Password: "",
+	//	DB:       0,
+	//})
+	//
+	//result := rdc.Info(context.Background())
+	//
+	//info, _ := redisinfo.Parse(result.String())
+	//
+	//data, _ := json.Marshal(info)
+	//fmt.Printf("%s\n", data)
+
+	//log.Println(json.Marshal(info))
+
+	return container.NewBorder(
+		nil,
+		widget.NewSeparator(),
+		nil,
+		container.NewHBox(
+			//widget.NewLabel("127.0.0.1:6379"),
+			//widget.NewLabel("clients: "+strconv.FormatInt(info.Clients.ConnectedClients, 10)),
+			widget.NewLabel("clients: 3"),
+			widget.NewSeparator(),
+			//widget.NewLabel("memory: "+info.Memory.UsedMemoryHuman),
+			widget.NewLabel("memory: 7349k"),
+			widget.NewSeparator(),
+			//widget.NewLabel("keys: "+strconv.FormatUint(info.Keyspace[0].Keys, 10)),
+			widget.NewLabel("keys: 6"),
+			widget.NewSeparator(),
+			selectEntry,
+		),
+		widget.NewLabel("127.0.0.1:6379"),
+	)
 }
 
 func newKeys() fyne.CanvasObject {
-	data := make([]string, 1000)
+	data := make([]string, 8)
 	for i := range data {
 		data[i] = "Test Item " + strconv.Itoa(i)
 	}
@@ -48,7 +113,7 @@ func newKeys() fyne.CanvasObject {
 		label.SetText("Select An Item From The List")
 		icon.SetResource(nil)
 	}
-	list.Select(125)
+	//list.Select(125)
 
 	split := container.NewHSplit(list, container.NewCenter(hbox))
 	split.Offset = 0.2
