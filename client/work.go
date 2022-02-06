@@ -99,7 +99,6 @@ func newKeys() fyne.CanvasObject {
 			return len(data)
 		},
 		func() fyne.CanvasObject {
-			//return container.NewHBox(widget.NewIcon(theme.MediaRecordIcon()), widget.NewLabel("Template Object"))
 			return container.NewHBox(widget.NewIcon(theme.StorageIcon()), widget.NewLabel("Template Object"))
 		},
 		func(id widget.ListItemID, item fyne.CanvasObject) {
