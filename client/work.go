@@ -92,14 +92,15 @@ func newKeys() fyne.CanvasObject {
 
 	icon := widget.NewIcon(nil)
 	label := widget.NewLabel("Select An Item From The List")
-	hbox := container.NewHBox(icon, label)
+	center := container.NewHBox(icon, label)
 
 	list := widget.NewList(
 		func() int {
 			return len(data)
 		},
 		func() fyne.CanvasObject {
-			return container.NewHBox(widget.NewIcon(theme.DocumentIcon()), widget.NewLabel("Template Object"))
+			//return container.NewHBox(widget.NewIcon(theme.MediaRecordIcon()), widget.NewLabel("Template Object"))
+			return container.NewHBox(widget.NewIcon(theme.StorageIcon()), widget.NewLabel("Template Object"))
 		},
 		func(id widget.ListItemID, item fyne.CanvasObject) {
 			item.(*fyne.Container).Objects[1].(*widget.Label).SetText(data[id])
@@ -115,7 +116,7 @@ func newKeys() fyne.CanvasObject {
 	}
 	//list.Select(125)
 
-	split := container.NewHSplit(list, container.NewCenter(hbox))
+	split := container.NewHSplit(list, container.NewCenter(center))
 	split.Offset = 0.2
 
 	return split
