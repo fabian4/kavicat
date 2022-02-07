@@ -1,7 +1,6 @@
 package client
 
 import (
-	"fmt"
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/theme"
@@ -36,7 +35,7 @@ func newHeadInfo() fyne.CanvasObject {
 			"DB-15",
 		},
 		func(s string) {
-			fmt.Println("selected", s)
+			//fmt.Println("selected", s)
 		},
 	)
 	selectEntry.SetSelectedIndex(0)
