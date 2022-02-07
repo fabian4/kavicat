@@ -87,7 +87,7 @@ func newHeadInfo() fyne.CanvasObject {
 func newKeys() fyne.CanvasObject {
 	data := make([]string, 8)
 	for i := range data {
-		data[i] = "Test Item " + strconv.Itoa(i)
+		data[i] = "Key " + strconv.Itoa(i)
 	}
 
 	keyLabel := widget.NewLabel("Key")
@@ -115,7 +115,10 @@ func newKeys() fyne.CanvasObject {
 		container.NewHBox(keyLabel, key, TtlLabel, TTL),
 	)
 
-	center := container.NewBorder(top, nil, nil, nil, widget.NewMultiLineEntry())
+	value := widget.NewMultiLineEntry()
+	value.SetText("value value value value")
+
+	center := container.NewBorder(top, nil, nil, nil, value)
 
 	list := widget.NewList(
 		func() int {
