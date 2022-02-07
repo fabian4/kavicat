@@ -10,7 +10,9 @@ import (
 )
 
 func NewWork() fyne.CanvasObject {
-	return container.NewBorder(newHeadInfo(), nil, nil, nil, newKeys())
+	split := container.NewHSplit(newKeys(), newDetail())
+	split.Offset = 0.2
+	return container.NewBorder(newHeadInfo(), nil, nil, nil, split)
 }
 
 func newHeadInfo() fyne.CanvasObject {
@@ -87,6 +89,31 @@ func newKeys() fyne.CanvasObject {
 		data[i] = "Key " + strconv.Itoa(i)
 	}
 
+	list := widget.NewList(
+		func() int {
+			return len(data)
+		},
+		func() fyne.CanvasObject {
+			return container.NewHBox(widget.NewIcon(theme.StorageIcon()), widget.NewLabel("Template Object"))
+		},
+		func(id widget.ListItemID, item fyne.CanvasObject) {
+			item.(*fyne.Container).Objects[1].(*widget.Label).SetText(data[id])
+		},
+	)
+	list.OnSelected = func(id widget.ListItemID) {
+		//label.SetText(data[id])
+		//icon.SetResource(theme.DocumentIcon())
+	}
+	list.OnUnselected = func(id widget.ListItemID) {
+		//label.SetText("Select An Item From The List")
+		//icon.SetResource(nil)
+	}
+	//list.Select(125)
+
+	return list
+}
+
+func newDetail() fyne.CanvasObject {
 	keyLabel := widget.NewLabel("Key")
 	key := widget.NewEntry()
 	key.SetText("keyyyyyy")
@@ -115,31 +142,5 @@ func newKeys() fyne.CanvasObject {
 	value := widget.NewMultiLineEntry()
 	value.SetText("value value value value")
 
-	center := container.NewBorder(top, nil, nil, nil, value)
-
-	list := widget.NewList(
-		func() int {
-			return len(data)
-		},
-		func() fyne.CanvasObject {
-			return container.NewHBox(widget.NewIcon(theme.StorageIcon()), widget.NewLabel("Template Object"))
-		},
-		func(id widget.ListItemID, item fyne.CanvasObject) {
-			item.(*fyne.Container).Objects[1].(*widget.Label).SetText(data[id])
-		},
-	)
-	list.OnSelected = func(id widget.ListItemID) {
-		//label.SetText(data[id])
-		//icon.SetResource(theme.DocumentIcon())
-	}
-	list.OnUnselected = func(id widget.ListItemID) {
-		//label.SetText("Select An Item From The List")
-		//icon.SetResource(nil)
-	}
-	//list.Select(125)
-
-	split := container.NewHSplit(list, center)
-	split.Offset = 0.2
-
-	return split
+	return container.NewBorder(top, nil, nil, nil, value)
 }
