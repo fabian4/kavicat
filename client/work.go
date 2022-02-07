@@ -92,7 +92,19 @@ func newKeys() fyne.CanvasObject {
 
 	icon := widget.NewIcon(nil)
 	label := widget.NewLabel("Select An Item From The List")
-	center := container.NewHBox(icon, label)
+	category := widget.NewSelect(
+		[]string{
+			"String",
+			"List",
+			"Set",
+		},
+		func(s string) {
+			fmt.Println("selected", s)
+		},
+	)
+	top := container.NewHBox(icon, label, category)
+
+	center := container.NewBorder(top, nil, nil, nil, widget.NewMultiLineEntry())
 
 	list := widget.NewList(
 		func() int {
@@ -106,16 +118,16 @@ func newKeys() fyne.CanvasObject {
 		},
 	)
 	list.OnSelected = func(id widget.ListItemID) {
-		label.SetText(data[id])
-		icon.SetResource(theme.DocumentIcon())
+		//label.SetText(data[id])
+		//icon.SetResource(theme.DocumentIcon())
 	}
 	list.OnUnselected = func(id widget.ListItemID) {
-		label.SetText("Select An Item From The List")
-		icon.SetResource(nil)
+		//label.SetText("Select An Item From The List")
+		//icon.SetResource(nil)
 	}
 	//list.Select(125)
 
-	split := container.NewHSplit(list, container.NewCenter(center))
+	split := container.NewHSplit(list, center)
 	split.Offset = 0.2
 
 	return split
