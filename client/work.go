@@ -10,9 +10,6 @@ import (
 )
 
 func NewWork() fyne.CanvasObject {
-
-	//return canvas.NewText("content", theme.ForegroundColor())
-
 	return container.NewBorder(newHeadInfo(), nil, nil, nil, newKeys())
 }
 
