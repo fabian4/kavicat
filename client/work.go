@@ -90,19 +90,30 @@ func newKeys() fyne.CanvasObject {
 		data[i] = "Test Item " + strconv.Itoa(i)
 	}
 
-	icon := widget.NewIcon(nil)
-	label := widget.NewLabel("Select An Item From The List")
-	category := widget.NewSelect(
-		[]string{
-			"String",
-			"List",
-			"Set",
-		},
-		func(s string) {
-			fmt.Println("selected", s)
-		},
+	keyLabel := widget.NewLabel("Key")
+	key := widget.NewEntry()
+	key.SetText("keyyyyyy")
+	key.Wrapping = fyne.TextWrapOff
+	key.Refresh()
+	category := widget.NewButton("String", func() {})
+
+	category.Disable()
+
+	TtlLabel := widget.NewLabel("TTL")
+	TTL := widget.NewEntry()
+	TTL.SetText("-1")
+
+	refreshButton := widget.NewButtonWithIcon("", theme.MediaReplayIcon(), func() {})
+	deleteButton := widget.NewButtonWithIcon("", theme.DeleteIcon(), func() {})
+	saveButton := widget.NewButtonWithIcon("", theme.DocumentSaveIcon(), func() {})
+
+	top := container.NewBorder(
+		nil,
+		nil,
+		nil,
+		container.NewHBox(category, refreshButton, deleteButton, saveButton),
+		container.NewHBox(keyLabel, key, TtlLabel, TTL),
 	)
-	top := container.NewHBox(icon, label, category)
 
 	center := container.NewBorder(top, nil, nil, nil, widget.NewMultiLineEntry())
 
