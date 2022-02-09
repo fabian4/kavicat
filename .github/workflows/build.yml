@@ -8,13 +8,27 @@ name: build
 on: [push, pull_request]
 
 jobs:
-  build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-#        os: [ ubuntu-latest, windows-latest, macos-latest ]
-        os: [ windows-latest ]
+
+  release:
+    runs-on: ubuntu-latest
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+    steps:
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release kavicat ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+  build-on-Linux:
+    name: build on Linux
+    needs: release
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
@@ -25,7 +39,6 @@ jobs:
 
       - name: Get dependencies
         run: sudo apt-get update && sudo apt-get install gcc libgl1-mesa-dev libegl1-mesa-dev libgles2-mesa-dev libx11-dev xorg-dev
-        if: ${{ runner.os == 'Linux' }}
 
       - name: Install fyne
         run: go get fyne.io/fyne/v2/cmd/fyne
@@ -33,24 +46,67 @@ jobs:
       - name: Fyne package
         run: fyne package
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@master
+      - name: upload
+        uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-           tag_name: ${{ github.ref }}
-           release_name: Release ${{ github.ref }}
-           draft: false
-           prerelease: false
+          upload_url: ${{ needs.release.outputs.upload_url }}
+          asset_path: kavicat.tar.gz
+          asset_name: kavicat.tar.gz
+          asset_content_type: application/gzip
 
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+  build-on-windows:
+    runs-on: windows-latest
+    needs: release
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./kavicat.exe # 要上传文件
-          asset_name: kavicat for Windows.tar.gz # 上传后的文件名
+          go-version: 1.16
+
+      - name: Install fyne
+        run: go get fyne.io/fyne/v2/cmd/fyne
+
+      - name: Fyne package
+        run: fyne package
+
+      - name: upload
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.release.outputs.upload_url }}
+          asset_path: kavicat.exe
+          asset_name: kavicat.exe
           asset_content_type: application/exe
+
+  build-on-macos:
+    runs-on: macos-latest
+    needs: release
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.16
+
+      - name: Install fyne
+        run: go get fyne.io/fyne/v2/cmd/fyne
+
+      - name: Fyne package
+        run: fyne package
+
+      - name: upload
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.release.outputs.upload_url }}
+          asset_path: kavicat.app
+          asset_name: kavicat.app
+          asset_content_type: application/app
 
