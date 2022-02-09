@@ -14,7 +14,7 @@ jobs:
       fail-fast: false
       matrix:
 #        os: [ ubuntu-latest, windows-latest, macos-latest ]
-        os: [ ubuntu-latest ]
+        os: [ windows-latest ]
     steps:
       - uses: actions/checkout@v2
 
@@ -50,7 +50,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./kavicat.tar.gz/* # 要上传文件
-          asset_name: kavicat for Linux.tar.gz # 上传后的文件名
-          asset_content_type: application/x-tgz
+          asset_path: ./kavicat.exe # 要上传文件
+          asset_name: kavicat for Windows.tar.gz # 上传后的文件名
+          asset_content_type: application/exe
 
