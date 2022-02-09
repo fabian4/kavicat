@@ -46,17 +46,14 @@ jobs:
       - name: Fyne package
         run: fyne package
 
-      - name: debug
-        run: echo "`ls`"
-
       - name: upload
         uses: actions/upload-release-asset@main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.release.outputs.upload_url }}
-          asset_path: kavicat.tar.gz
-          asset_name: kavicat.tar.gz
+          asset_path: kavicat.tar.xz
+          asset_name: kavicat.tar.xz
           asset_content_type: application/gzip
 
   build-on-windows:
@@ -102,6 +99,9 @@ jobs:
 
       - name: Fyne package
         run: fyne package
+
+      - name: debug
+        run: echo "`ls`"
 
       - name: upload
         uses: actions/upload-release-asset@main
