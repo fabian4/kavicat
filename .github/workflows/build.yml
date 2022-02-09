@@ -34,6 +34,7 @@ jobs:
         run: fyne package
 
       - name: Create Release
+        id: create_release
         uses: actions/create-release@master
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
