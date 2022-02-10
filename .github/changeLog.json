@@ -11,23 +11,37 @@
     {
       "title": "## 🧪 Tests",
       "labels": ["test"]
+    },
+    {
+      "title": "## 📖 Documentation",
+      "labels": ["docs"]
     }
   ],
   "ignore_labels": [
     "ignore"
   ],
   "sort": "ASC",
-  "template": "${{FROM_TAG}}\n${{TO_TAG}}\n${{CHANGELOG}}\n${{RELEASE_DIFF}}\n${{OWNER}}\n${{REPO}}",
+  "template": "${{CHANGELOG}}\\n\\n<details>\\n<summary>Uncategorized</summary>\\n\\n${{UNCATEGORIZED}}\\n</details>\nDiff: 👉${{RELEASE_DIFF}}",
   "pr_template": "- ${{TITLE}}-${{MERGE_SHA}}-${{URL}}-${{AUTHOR}} ",
-  "empty_template": "${{OWNER}}\n${{REPO}}\n${{FROM_TAG}}\n${{TO_TAG}}",
+  "empty_template": "- no changes",
   "label_extractor": [
     {
-      "pattern": "(.) (.+)",
-      "target": "$1",
-      "flags": "gu"
+      "pattern": "^feat",
+      "on_property": "title",
+      "method": "match"
     },
     {
-      "pattern": "\\[Issue\\]",
+      "pattern": "^test",
+      "on_property": "title",
+      "method": "match"
+    },
+    {
+      "pattern": "^fix",
+      "on_property": "title",
+      "method": "match"
+    },
+    {
+      "pattern": "^docs",
       "on_property": "title",
       "method": "match"
     }
@@ -37,12 +51,6 @@
     "on_property": "title",
     "method": "match"
   },
-  "transformers": [
-    {
-      "pattern": "[\\-\\*] (\\[(...|TEST|CI|SKIP)\\])( )?(.+?)\n(.+?[\\-\\*] )(.+)",
-      "target": "- $4\n  - $6"
-    }
-  ],
   "max_tags_to_fetch": 200,
   "max_pull_requests": 200,
   "max_back_track_time_days": 365,
