@@ -1,8 +1,8 @@
-name: Platform Tests
+name: Platform Test
 on: [push, pull_request]
 
 jobs:
-  platform_tests:
+  platform_test:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false

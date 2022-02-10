@@ -1,0 +1,25 @@
+name: Platform Tests
+on: [push, pull_request]
+
+jobs:
+  package:
+    name: package on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.16
+
+      - name: Get dependencies
+        run: sudo apt-get update && sudo apt-get install gcc libgl1-mesa-dev libegl1-mesa-dev libgles2-mesa-dev libx11-dev xorg-dev
+        if: ${{ runner.os == 'Linux' }}
+
+      - name: Install fyne
+        run: go get fyne.io/fyne/v2/cmd/fyne
+
+      - name: Fyne package
+        run: fyne package
