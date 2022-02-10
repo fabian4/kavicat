@@ -1,4 +1,4 @@
-name: Platform Test
+name: platform test
 on: [push, pull_request]
 
 jobs:
