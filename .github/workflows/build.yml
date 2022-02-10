@@ -16,7 +16,7 @@ jobs:
     steps:
       - name: Build Changelog
         id: build_changelog
-        uses: mikepenz/release-changelog-builder-action@{latest-release}
+        uses: mikepenz/release-changelog-builder-action@latest
         with:
           configuration: "../changeLog.json"
         env:
@@ -31,7 +31,7 @@ jobs:
           tag_name: ${{ github.ref }}
           release_name: Release kavicat ${{ github.ref }}
           body: ${{steps.build_changelog.outputs.changelog}}
-          draft: false
+          draft: true
           prerelease: false
 
   publish:
