@@ -21,8 +21,8 @@
     "ignore"
   ],
   "sort": "DESC",
-  "template": "${{CHANGELOG}}\n\n<details>\n<summary>Uncategorized</summary>\n\n${{UNCATEGORIZED}}\n</details>\nDiff: 👉 ${{RELEASE_DIFF}}",
-  "pr_template": "- ${{TITLE}} ${{MERGE_SHA}} ${{URL}}",
+  "template": "${{CHANGELOG}}\n\n<details>\n<summary>Uncategorized</summary>\n\n${{UNCATEGORIZED}}\n</details>\n\nDiff: 👉 ${{RELEASE_DIFF}}",
+  "pr_template": "- ${{TITLE}} ${{MERGE_SHA}}",
   "empty_template": "- no changes",
   "label_extractor": [
     {
@@ -56,7 +56,7 @@
   "max_back_track_time_days": 365,
   "transformers": [
     {
-      "pattern": ".+: ",
+      "pattern": "[a-z]+: ",
       "target": ""
     }
   ],
