@@ -25,10 +25,22 @@ jobs:
           draft: false
           prerelease: false
 
-  build-on-Linux:
-    name: build on Linux
-    needs: release
-    runs-on: ubuntu-latest
+  publish:
+    name: Publish for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            artifact_name: kavicat.tar.xz
+            asset_name: kavicat_for_linux_${{ github.ref }}.tar.xz
+          - os: windows-latest
+            artifact_name: kavicat.exe
+            asset_name: kavicat_for_windows_${{ github.ref }}.exe
+          - os: macos-latest
+            artifact_name: kavicat.app
+            asset_name: kavicat_for_macos_${{ github.ref }}.app
+
     steps:
       - uses: actions/checkout@v2
 
@@ -39,6 +51,7 @@ jobs:
 
       - name: Get dependencies
         run: sudo apt-get update && sudo apt-get install gcc libgl1-mesa-dev libegl1-mesa-dev libgles2-mesa-dev libx11-dev xorg-dev
+        if: ${{ runner.os == 'Linux' }}
 
       - name: Install fyne
         run: go get fyne.io/fyne/v2/cmd/fyne
@@ -46,70 +59,99 @@ jobs:
       - name: Fyne package
         run: fyne package
 
-      - name: upload
-        uses: actions/upload-release-asset@main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload package to release
+        uses: svenstaro/upload-release-action@v2
         with:
-          upload_url: ${{ needs.release.outputs.upload_url }}
-          asset_path: kavicat.tar.xz
-          asset_name: kavicat_for_linux_${{ github.ref }}.tar.xz
-          asset_content_type: application/gzip
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ${{ matrix.artifact_name }}
+          asset_name: ${{ matrix.asset_name }}
+          tag: ${{ github.ref }}
 
-  build-on-windows:
-    runs-on: windows-latest
-    needs: release
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Set up Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: 1.16
-
-      - name: Install fyne
-        run: go get fyne.io/fyne/v2/cmd/fyne
-
-      - name: Fyne package
-        run: fyne package
-
-      - name: upload
-        uses: actions/upload-release-asset@main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ needs.release.outputs.upload_url }}
-          asset_path: kavicat.exe
-          asset_name: kavicat_for_windows_${{ github.ref }}.exe
-          asset_content_type: application/exe
-
-  build-on-macos:
-    runs-on: macos-latest
-    needs: release
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Set up Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: 1.16
-
-      - name: Install fyne
-        run: go get fyne.io/fyne/v2/cmd/fyne
-
-      - name: Fyne package
-        run: fyne package
-
-      - name: debug
-        run: echo "`ls -l`"
-
-      - name: upload
-        uses: actions/upload-release-asset@main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ needs.release.outputs.upload_url }}
-          asset_path: kavicat.app/*
-          asset_name: kavicat.app
-          asset_content_type: application/app
+#  build-on-Linux:
+#    name: build on Linux
+#    needs: release
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v2
+#
+#      - name: Set up Go
+#        uses: actions/setup-go@v2
+#        with:
+#          go-version: 1.16
+#
+#      - name: Get dependencies
+#        run: sudo apt-get update && sudo apt-get install gcc libgl1-mesa-dev libegl1-mesa-dev libgles2-mesa-dev libx11-dev xorg-dev
+#
+#      - name: Install fyne
+#        run: go get fyne.io/fyne/v2/cmd/fyne
+#
+#      - name: Fyne package
+#        run: fyne package
+#
+#      - name: upload
+#        uses: actions/upload-release-asset@main
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          upload_url: ${{ needs.release.outputs.upload_url }}
+#          asset_path: kavicat.tar.xz
+#          asset_name: kavicat_for_linux_${{ github.ref }}.tar.xz
+#          asset_content_type: application/gzip
+#
+#  build-on-windows:
+#    runs-on: windows-latest
+#    needs: release
+#    steps:
+#      - uses: actions/checkout@v2
+#
+#      - name: Set up Go
+#        uses: actions/setup-go@v2
+#        with:
+#          go-version: 1.16
+#
+#      - name: Install fyne
+#        run: go get fyne.io/fyne/v2/cmd/fyne
+#
+#      - name: Fyne package
+#        run: fyne package
+#
+#      - name: upload
+#        uses: actions/upload-release-asset@main
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          upload_url: ${{ needs.release.outputs.upload_url }}
+#          asset_path: kavicat.exe
+#          asset_name: kavicat_for_windows_${{ github.ref }}.exe
+#          asset_content_type: application/exe
+#
+#  build-on-macos:
+#    runs-on: macos-latest
+#    needs: release
+#    steps:
+#      - uses: actions/checkout@v2
+#
+#      - name: Set up Go
+#        uses: actions/setup-go@v2
+#        with:
+#          go-version: 1.16
+#
+#      - name: Install fyne
+#        run: go get fyne.io/fyne/v2/cmd/fyne
+#
+#      - name: Fyne package
+#        run: fyne package
+#
+#      - name: debug
+#        run: echo "`ls -l`"
+#
+#      - name: upload
+#        uses: actions/upload-release-asset@main
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          upload_url: ${{ needs.release.outputs.upload_url }}
+#          asset_path: kavicat.app
+#          asset_name: kavicat.app
+#          asset_content_type: application/app
 
