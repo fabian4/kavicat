@@ -21,8 +21,8 @@
     "ignore"
   ],
   "sort": "ASC",
-  "template": "${{CHANGELOG}}\\n\\n<details>\\n<summary>Uncategorized</summary>\\n\\n${{UNCATEGORIZED}}\\n</details>\nDiff: 👉${{RELEASE_DIFF}}",
-  "pr_template": "- ${{TITLE}}-${{MERGE_SHA}}-${{URL}}-${{AUTHOR}} ",
+  "template": "${{CHANGELOG}}\n\n<details>\n<summary>Uncategorized</summary>\n\n${{UNCATEGORIZED}}\n</details>\nDiff: 👉${{RELEASE_DIFF}}",
+  "pr_template": "- ${{TITLE}} ${{MERGE_SHA}} ${{URL}} @${{AUTHOR}} ",
   "empty_template": "- no changes",
   "label_extractor": [
     {
