@@ -25,6 +25,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Echo  Changelog
+        env:
+          CHANGELOG: ${{ steps.build_changelog.outputs.changelog }}
+        run: echo "CHANGELOG"
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
