@@ -135,33 +135,33 @@ jobs:
 #          asset_name: kavicat_for_windows_${{ github.ref }}.exe
 #          asset_content_type: application/exe
 
-  build-on-macos:
-    runs-on: macos-latest
-    needs: release
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Set up Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: 1.16
-
-      - name: Install fyne
-        run: go get fyne.io/fyne/v2/cmd/fyne
-
-      - name: Fyne package
-        run: fyne package
-
-      - name: Package file
-        run: tar -cf kavicat.app.tar kavicat.app
-
-      - name: upload
-        uses: actions/upload-release-asset@main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ needs.release.outputs.upload_url }}
-          asset_path: kavicat.app.tar
-          asset_name: kavicat.app.tar
-          asset_content_type: application/app
+#  build-on-macos:
+#    runs-on: macos-latest
+#    needs: release
+#    steps:
+#      - uses: actions/checkout@v2
+#
+#      - name: Set up Go
+#        uses: actions/setup-go@v2
+#        with:
+#          go-version: 1.16
+#
+#      - name: Install fyne
+#        run: go get fyne.io/fyne/v2/cmd/fyne
+#
+#      - name: Fyne package
+#        run: fyne package
+#
+#      - name: Package file
+#        run: tar -cf kavicat.app.tar kavicat.app
+#
+#      - name: upload
+#        uses: actions/upload-release-asset@main
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          upload_url: ${{ needs.release.outputs.upload_url }}
+#          asset_path: kavicat.app.tar
+#          asset_name: kavicat.app.tar
+#          asset_content_type: application/app
 
