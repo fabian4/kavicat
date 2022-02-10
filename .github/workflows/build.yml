@@ -14,14 +14,23 @@ jobs:
     outputs:
       upload_url: ${{ steps.create_release.outputs.upload_url }}
     steps:
+      - name: Build Changelog
+        id: build_changelog
+        uses: mikepenz/release-changelog-builder-action@{latest-release}
+        with:
+          configuration: "../changeLog.json"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Create Release
         id: create_release
-        uses: release-drafter/release-drafter@v5
+        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
           release_name: Release kavicat ${{ github.ref }}
+          body: ${{steps.build_changelog.outputs.changelog}}
           draft: false
           prerelease: false
 
