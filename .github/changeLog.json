@@ -47,7 +47,7 @@
     }
   ],
   "duplicate_filter": {
-    "pattern": "\\[ABC-....\\]",
+    "pattern": ".+",
     "on_property": "title",
     "method": "match"
   },
