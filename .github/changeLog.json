@@ -2,7 +2,7 @@
   "categories": [
     {
       "title": "## 🚀 Features",
-      "labels": ["feature"]
+      "labels": ["feat"]
     },
     {
       "title": "## 🐛 Fixes",
@@ -17,8 +17,8 @@
     "ignore"
   ],
   "sort": "ASC",
-  "template": "${{CHANGELOG}}\n\nUncategorized:\n${{UNCATEGORIZED}}\n\nIgnored:\n${{IGNORED}}\n\n${{UNCATEGORIZED_COUNT}}\n${{IGNORED_COUNT}}",
-  "pr_template": "- ${{TITLE}}\n   - PR: #${{NUMBER}}",
+  "template": "${{FROM_TAG}}\n${{TO_TAG}}\n${{CHANGELOG}}\n${{RELEASE_DIFF}}\n${{OWNER}}\n${{REPO}}",
+  "pr_template": "- ${{TITLE}}-${{MERGE_SHA}}-${{URL}}-${{AUTHOR}} ",
   "empty_template": "${{OWNER}}\n${{REPO}}\n${{FROM_TAG}}\n${{TO_TAG}}",
   "label_extractor": [
     {
