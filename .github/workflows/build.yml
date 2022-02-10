@@ -14,9 +14,11 @@ jobs:
     outputs:
       upload_url: ${{ steps.create_release.outputs.upload_url }}
     steps:
+      - uses: actions/checkout@v2
+
       - name: Build Changelog
         id: build_changelog
-        uses: mikepenz/release-changelog-builder-action@v1
+        uses: mikepenz/release-changelog-builder-action@v2
         with:
           configuration: "../changeLog.json"
         env:
