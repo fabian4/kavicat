@@ -142,8 +142,8 @@ jobs:
       - name: Fyne package
         run: fyne package
 
-      - name: Display structure of downloaded files
-        run: ls -R
+      - name: Package file
+        run: tar -cf kavicat.app.tar kavicat.app
 
       - name: upload
         uses: actions/upload-release-asset@main
@@ -151,7 +151,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.release.outputs.upload_url }}
-          asset_path: kavicat.app
-          asset_name: kavicat.app
+          asset_path: kavicat.app.tar
+          asset_name: kavicat.app.tar
           asset_content_type: application/app
 
