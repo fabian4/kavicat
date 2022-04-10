@@ -21,7 +21,7 @@ func NewList() fyne.CanvasObject {
 			o.(*fyne.Container).Objects[0].(*widget.Label).Bind(i.(binding.String))
 		})
 	connection.OnSelected = func(id widget.ListItemID) {
-		log.Println(data.GetRedisConnkeysById(id))
+		log.Println(data.SetDataInfoById(id))
 	}
 	return connection
 }

@@ -38,6 +38,26 @@ func NewRedisConn(redisConn *data.RedisConn) {
 	event.Emit("connection_success", "Connected", redisConn.Host+" : "+redisConn.Port)
 
 	redisConn.Client = rdc
-	data.AddRedisConn(*redisConn)
+	data.AddRedisConn(redisConn)
 
+}
+
+func ReconnectRedis(redisConn *data.RedisConn) {
+
+	rdc = redis.NewClient(&redis.Options{
+		Addr:     redisConn.Host + ":" + redisConn.Port,
+		Password: redisConn.Auth,
+		DB:       0,
+	})
+
+	//todo: pick a test api
+	err := rdc.Set(ctx, "key", "value", 0).Err()
+	if err != nil {
+		event.Emit("connection_fail", "Connection Fail", err.Error(), "redis")
+		return
+	}
+
+	event.Emit("connection_success", "Connected", redisConn.Host+" : "+redisConn.Port)
+
+	redisConn.Client = rdc
 }

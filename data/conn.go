@@ -1,14 +1,22 @@
 package data
 
-import "fyne.io/fyne/v2/data/binding"
+import (
+	"fyne.io/fyne/v2/data/binding"
+	"github.com/fabian4/kavicat/conn"
+)
 
 var (
 	redisConnKeys []string
 	conns         binding.StringList
 )
 
-func GetRedisConnkeysById(id int) string {
-	return redisConnKeys[id]
+func SetDataInfoById(id int) string {
+	connection := GetRedisConn(redisConnKeys[id])
+	if connection.Client == nil {
+		conn.ReconnectRedis(connection)
+	}
+
+	return "ok"
 }
 
 func GetRedisConnKeys() binding.StringList {

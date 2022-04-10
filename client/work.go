@@ -66,7 +66,6 @@ func newHeadInfo() fyne.CanvasObject {
 		widget.NewSeparator(),
 		nil,
 		container.NewHBox(
-			//widget.NewLabel("127.0.0.1:6379"),
 			//widget.NewLabel("clients: "+strconv.FormatInt(info.Clients.ConnectedClients, 10)),
 			widget.NewLabel("clients: 3"),
 			widget.NewSeparator(),
