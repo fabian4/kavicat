@@ -2,6 +2,7 @@ package data
 
 import (
 	"context"
+	"fmt"
 	"github.com/fabian4/kavicat/event"
 	"github.com/go-redis/redis/v8"
 )
@@ -51,7 +52,6 @@ func NewRedisConn(redisConn *RedisConn) {
 }
 
 func ReconnectRedis(redisConn *RedisConn) {
-
 	rdc = redis.NewClient(&redis.Options{
 		Addr:     redisConn.Host + ":" + redisConn.Port,
 		Password: redisConn.Auth,
@@ -70,6 +70,17 @@ func ReconnectRedis(redisConn *RedisConn) {
 	redisConn.Client = rdc
 }
 
+func getRedisKeys(client *redis.Client) []string {
+	keys := client.Keys(ctx, "*").Val()
+	return keys
+}
+
+func get(key string) string {
+	value := rdc.Get(ctx, key).Val()
+	fmt.Println(value)
+	return value
+}
+
 func AddRedisConn(redisConn *RedisConn) {
 	redisConns[redisConn.Name] = redisConn
 	appendRedisConnkeys(redisConn.Name)
@@ -82,4 +93,28 @@ func GetRedisConn(name string) *RedisConn {
 func HasRedisConn(name string) bool {
 	_, found := redisConns[name]
 	return found
+}
+
+func InitRedisConns() {
+	redisConns["127.0.0.1:6379"] = &RedisConn{
+		Host:   "127.0.0.1",
+		Port:   "6379",
+		Auth:   "",
+		Name:   "",
+		Client: nil,
+	}
+	redisConns["192.168.34.67:2579"] = &RedisConn{
+		Host:   "192.168.34.67",
+		Port:   "2579",
+		Auth:   "",
+		Name:   "",
+		Client: nil,
+	}
+	redisConns["10.103.24.3:6738"] = &RedisConn{
+		Host:   "10.103.24.3",
+		Port:   "6738",
+		Auth:   "",
+		Name:   "",
+		Client: nil,
+	}
 }

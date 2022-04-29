@@ -3,9 +3,10 @@ package client
 import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/data/binding"
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
-	"strconv"
+	"github.com/fabian4/kavicat/data"
 )
 
 func NewWork() fyne.CanvasObject {
@@ -82,31 +83,23 @@ func newHeadInfo() fyne.CanvasObject {
 }
 
 func newKeys() fyne.CanvasObject {
-	data := make([]string, 8)
-	for i := range data {
-		data[i] = "Key " + strconv.Itoa(i)
-	}
+	//data := make([]string, 8)
+	//for i := range data {
+	//	data[i] = "Key " + strconv.Itoa(i)
+	//
+	bindData := data.Keys
 
-	list := widget.NewList(
-		func() int {
-			return len(data)
-		},
+	list := widget.NewListWithData(bindData,
 		func() fyne.CanvasObject {
-			return container.NewHBox(widget.NewIcon(theme.StorageIcon()), widget.NewLabel("Template Object"))
+			return container.NewBorder(nil, nil, nil, widget.NewIcon(theme.MoreVerticalIcon()),
+				widget.NewLabel("template"))
 		},
-		func(id widget.ListItemID, item fyne.CanvasObject) {
-			item.(*fyne.Container).Objects[1].(*widget.Label).SetText(data[id])
-		},
-	)
+		func(i binding.DataItem, o fyne.CanvasObject) {
+			o.(*fyne.Container).Objects[0].(*widget.Label).Bind(i.(binding.String))
+		})
 	list.OnSelected = func(id widget.ListItemID) {
-		//label.SetText(data[id])
-		//icon.SetResource(theme.DocumentIcon())
+		data.SetValuesByKeyId(id)
 	}
-	list.OnUnselected = func(id widget.ListItemID) {
-		//label.SetText("Select An Item From The List")
-		//icon.SetResource(nil)
-	}
-	//list.Select(125)
 
 	return list
 }
@@ -137,8 +130,7 @@ func newDetail() fyne.CanvasObject {
 		container.NewHBox(keyLabel, key, TtlLabel, TTL),
 	)
 
-	value := widget.NewMultiLineEntry()
-	value.SetText("value value value value")
+	value := widget.NewEntryWithData(data.Value)
 
 	return container.NewBorder(top, nil, nil, nil, value)
 }

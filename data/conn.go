@@ -1,31 +1,43 @@
 package data
 
 import (
+	"fmt"
 	"fyne.io/fyne/v2/data/binding"
 )
 
 var (
 	redisConnKeys []string
-	conns         binding.StringList
+	Keys          = binding.NewStringList()
+	Conns         = binding.NewStringList()
+	Value         = binding.NewString()
 )
 
-func SetDataInfoById(id int) string {
+func SetConnInfoById(id int) string {
 	connection := GetRedisConn(redisConnKeys[id])
 	if connection.Client == nil {
 		ReconnectRedis(connection)
 	}
-
+	redisKeys := getRedisKeys(connection.Client)
+	fmt.Println(redisKeys)
+	_ = Keys.Set(redisKeys)
 	return "ok"
+}
+
+func SetValuesByKeyId(id int) {
+	key, _ := Keys.GetValue(id)
+	fmt.Println(key)
+	_ = Value.Set(get(key))
 }
 
 func GetRedisConnKeys() binding.StringList {
 	redisConnKeys = append(redisConnKeys, "127.0.0.1:6379")
 	redisConnKeys = append(redisConnKeys, "192.168.34.67:2579")
 	redisConnKeys = append(redisConnKeys, "10.103.24.3:6738")
-	conns = binding.BindStringList(&redisConnKeys)
-	return conns
+	_ = Conns.Set(redisConnKeys)
+	InitRedisConns()
+	return Conns
 }
 
 func appendRedisConnkeys(name string) {
-	_ = conns.Append(name)
+	_ = Conns.Append(name)
 }

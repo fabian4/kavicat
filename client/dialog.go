@@ -20,10 +20,10 @@ func ConnectionExist(args ...string) {
 func ConnectionFail(args ...string) {
 	dialog := dialog.NewInformation(args[0], args[1], GetWindow())
 	dialog.Resize(fyne.NewSize(200, 150))
-	switch args[2] {
-	case "redis":
-		dialog.SetOnClosed(newConnectionForRedis)
-		break
-	}
+	//switch args[2] {
+	//case "redis":
+	//	dialog.SetOnClosed(newConnectionForRedis)
+	//	break
+	//}
 	dialog.Show()
 }

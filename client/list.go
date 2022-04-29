@@ -7,7 +7,6 @@ import (
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 	"github.com/fabian4/kavicat/data"
-	"log"
 )
 
 func NewList() fyne.CanvasObject {
@@ -21,7 +20,7 @@ func NewList() fyne.CanvasObject {
 			o.(*fyne.Container).Objects[0].(*widget.Label).Bind(i.(binding.String))
 		})
 	connection.OnSelected = func(id widget.ListItemID) {
-		log.Println(data.SetDataInfoById(id))
+		data.SetConnInfoById(id)
 	}
 	return connection
 }
