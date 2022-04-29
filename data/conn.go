@@ -2,7 +2,6 @@ package data
 
 import (
 	"fyne.io/fyne/v2/data/binding"
-	"github.com/fabian4/kavicat/conn"
 )
 
 var (
@@ -13,7 +12,7 @@ var (
 func SetDataInfoById(id int) string {
 	connection := GetRedisConn(redisConnKeys[id])
 	if connection.Client == nil {
-		conn.ReconnectRedis(connection)
+		ReconnectRedis(connection)
 	}
 
 	return "ok"

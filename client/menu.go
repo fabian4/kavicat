@@ -5,7 +5,6 @@ import (
 	"fyne.io/fyne/v2/data/validation"
 	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/widget"
-	"github.com/fabian4/kavicat/conn"
 	"github.com/fabian4/kavicat/data"
 )
 
@@ -78,7 +77,7 @@ func newConnectionForRedis() {
 		items,
 		func(bool bool) {
 			if bool {
-				conn.NewRedisConn(&data.RedisConn{
+				data.NewRedisConn(&data.RedisConn{
 					Host: host.Text,
 					Port: port.Text,
 					Auth: auth.Text,
