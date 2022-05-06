@@ -44,6 +44,8 @@ func SaveValuesByKeyAndValue(key string, value string) {
 	_ = Key.Set(key)
 	_ = Value.Set(value)
 	save(key, value)
+
+	refreshKeyLists()
 }
 
 func refreshKeyLists() {

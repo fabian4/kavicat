@@ -4,9 +4,11 @@ import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/data/binding"
+	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 	"github.com/fabian4/kavicat/data"
+	"log"
 )
 
 func NewWork() fyne.CanvasObject {
@@ -106,13 +108,47 @@ func newDetail() fyne.CanvasObject {
 		data.SaveValuesByKeyAndValue(key.Text, value.Text)
 	})
 
+	addButton := widget.NewButtonWithIcon("", theme.ContentAddIcon(), func() {
+		addNewContent()
+	})
+
 	top := container.NewBorder(
 		nil,
 		nil,
 		nil,
-		container.NewHBox(category, refreshButton, deleteButton, saveButton),
+		container.NewHBox(category, refreshButton, deleteButton, saveButton, addButton),
 		container.NewHBox(keyLabel, key, TtlLabel, TTL),
 	)
 
 	return container.NewBorder(top, nil, nil, nil, value)
+}
+
+func addNewContent() {
+
+	key := widget.NewEntry()
+	key.PlaceHolder = "Input your key here."
+	key.Validator = nil
+
+	value := widget.NewEntry()
+	value.PlaceHolder = "Input your value here."
+	value.Validator = nil
+
+	items := []*widget.FormItem{
+		{Text: "key", Widget: key},
+		{Text: "value", Widget: value},
+	}
+
+	form := dialog.NewForm(
+		"Add key and value",
+		"add",
+		"cancel",
+		items,
+		func(bool bool) {
+			data.SaveValuesByKeyAndValue(key.Text, value.Text)
+			log.Println("save " + key.Text + ": " + value.Text)
+		},
+		GetWindow(),
+	)
+	form.Resize(fyne.NewSize(400, 200))
+	form.Show()
 }
