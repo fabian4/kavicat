@@ -83,12 +83,20 @@ func get(key string) string {
 
 func del(key string) {
 	log.Println("del " + key)
-	rdc.Del(ctx, key)
+	err := rdc.Del(ctx, key).Err()
+	if err != nil {
+		event.Emit("operation_fail", "Delete Fail", err.Error())
+	}
+	event.Emit("operation_success", "Delete success", "del "+key)
 }
 
 func save(key string, value string) {
 	log.Println("save " + key + ": " + value)
-	_ = rdc.Set(ctx, key, value, 0).Err()
+	err := rdc.Set(ctx, key, value, 0).Err()
+	if err != nil {
+		event.Emit("operation_fail", "Save Fail", err.Error())
+	}
+	event.Emit("operation_success", "Save success", "save [ key: "+key+", value: "+value+" ]")
 }
 
 func AddRedisConn(redisConn *RedisConn) {

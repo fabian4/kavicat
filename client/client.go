@@ -29,6 +29,8 @@ func Init() {
 	event.Register("connection_fail", ConnectionFail)
 	event.Register("connection_exist", ConnectionExist)
 	event.Register("connection_success", ConnectionSuccess)
+	event.Register("operation_fail", OperationFail)
+	event.Register("operation_success", OperationSuccess)
 
 	content := container.NewBorder(nil, bottom, nil, nil, split)
 

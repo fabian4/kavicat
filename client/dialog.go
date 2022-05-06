@@ -6,24 +6,36 @@ import (
 )
 
 func ConnectionSuccess(args ...string) {
-	dialog := dialog.NewInformation(args[0], args[1], GetWindow())
-	dialog.Resize(fyne.NewSize(200, 150))
-	dialog.Show()
+	remindInfo := dialog.NewInformation(args[0], args[1], GetWindow())
+	remindInfo.Resize(fyne.NewSize(200, 150))
+	remindInfo.Show()
 }
 
 func ConnectionExist(args ...string) {
-	dialog := dialog.NewInformation("Connection Exist", args[0], GetWindow())
-	dialog.Resize(fyne.NewSize(200, 150))
-	dialog.Show()
+	remindInfo := dialog.NewInformation("Connection Exist", args[0], GetWindow())
+	remindInfo.Resize(fyne.NewSize(200, 150))
+	remindInfo.Show()
 }
 
 func ConnectionFail(args ...string) {
-	dialog := dialog.NewInformation(args[0], args[1], GetWindow())
-	dialog.Resize(fyne.NewSize(200, 150))
+	remindInfo := dialog.NewInformation(args[0], args[1], GetWindow())
+	remindInfo.Resize(fyne.NewSize(200, 150))
 	//switch args[2] {
 	//case "redis":
 	//	dialog.SetOnClosed(newConnectionForRedis)
 	//	break
 	//}
-	dialog.Show()
+	remindInfo.Show()
+}
+
+func OperationSuccess(args ...string) {
+	remindInfo := dialog.NewInformation(args[0], args[1], GetWindow())
+	remindInfo.Resize(fyne.NewSize(200, 150))
+	remindInfo.Show()
+}
+
+func OperationFail(args ...string) {
+	remindInfo := dialog.NewInformation("Operation Fail", args[0], GetWindow())
+	remindInfo.Resize(fyne.NewSize(200, 150))
+	remindInfo.Show()
 }
