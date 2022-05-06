@@ -1,7 +1,6 @@
 package data
 
 import (
-	"fmt"
 	"fyne.io/fyne/v2/data/binding"
 )
 
@@ -13,21 +12,43 @@ var (
 	Value         = binding.NewString()
 )
 
-func SetConnInfoById(id int) string {
+func SetConnInfoById(id int) {
 	connection := GetRedisConn(redisConnKeys[id])
 	if connection.Client == nil {
 		ReconnectRedis(connection)
 	}
-	redisKeys := getRedisKeys(connection.Client)
-	fmt.Println(redisKeys)
-	_ = Keys.Set(redisKeys)
-	return "ok"
+	refreshKeyLists()
 }
 
 func SetValuesByKeyId(id int) {
 	key, _ := Keys.GetValue(id)
 	_ = Key.Set(key)
 	_ = Value.Set(get(key))
+
+	refreshKeyLists()
+}
+
+func SetValuesByKey(key string) {
+	_ = Value.Set(get(key))
+}
+
+func DeleteValuesByKey(key string) {
+	_ = Key.Set(" ")
+	_ = Value.Set(" ")
+	del(key)
+
+	refreshKeyLists()
+}
+
+func SaveValuesByKeyAndValue(key string, value string) {
+	_ = Key.Set(key)
+	_ = Value.Set(value)
+	save(key, value)
+}
+
+func refreshKeyLists() {
+	redisKeys := getRedisKeys()
+	_ = Keys.Set(redisKeys)
 }
 
 func GetRedisConnKeys() binding.StringList {

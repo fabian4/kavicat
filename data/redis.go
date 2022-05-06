@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/fabian4/kavicat/event"
 	"github.com/go-redis/redis/v8"
+	"log"
 )
 
 var (
@@ -69,14 +70,25 @@ func ReconnectRedis(redisConn *RedisConn) {
 	redisConn.Client = rdc
 }
 
-func getRedisKeys(client *redis.Client) []string {
-	keys := client.Keys(ctx, "*").Val()
+func getRedisKeys() []string {
+	keys := rdc.Keys(ctx, "*").Val()
 	return keys
 }
 
 func get(key string) string {
 	value := rdc.Get(ctx, key).Val()
+	log.Println("get " + key + ": " + value)
 	return value
+}
+
+func del(key string) {
+	log.Println("del " + key)
+	rdc.Del(ctx, key)
+}
+
+func save(key string, value string) {
+	log.Println("save " + key + ": " + value)
+	_ = rdc.Set(ctx, key, value, 0).Err()
 }
 
 func AddRedisConn(redisConn *RedisConn) {

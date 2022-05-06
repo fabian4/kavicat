@@ -40,27 +40,6 @@ func newHeadInfo() fyne.CanvasObject {
 		},
 	)
 	selectEntry.SetSelectedIndex(0)
-	//info := container.NewHBox(
-	//	widget.NewLabel("redis: 127.0.0.1:6379"),
-	//	widget.NewLabel("db:"),
-	//	selectEntry,
-	//)
-	//return container.NewVBox(info, widget.NewSeparator())
-
-	//rdc := redis.NewClient(&redis.Options{
-	//	Addr:     "127.0.0.1:6379",
-	//	Password: "",
-	//	DB:       0,
-	//})
-	//
-	//result := rdc.Info(context.Background())
-	//
-	//info, _ := redisinfo.Parse(result.String())
-	//
-	//data, _ := json.Marshal(info)
-	//fmt.Printf("%s\n", data)
-
-	//log.Println(json.Marshal(info))
 
 	return container.NewBorder(
 		nil,
@@ -106,7 +85,6 @@ func newDetail() fyne.CanvasObject {
 	key.Wrapping = fyne.TextWrapOff
 	key.Validator = nil
 	key.SetPlaceHolder("  ")
-	//key.Refresh()
 	category := widget.NewButton("String", func() {})
 
 	category.Disable()
@@ -115,11 +93,18 @@ func newDetail() fyne.CanvasObject {
 	TTL := widget.NewEntry()
 	TTL.SetText("-1")
 
-	refreshButton := widget.NewButtonWithIcon("", theme.MediaReplayIcon(), func() {
+	value := widget.NewEntryWithData(data.Value)
+	value.Validator = nil
 
+	refreshButton := widget.NewButtonWithIcon("", theme.MediaReplayIcon(), func() {
+		data.SetValuesByKey(key.Text)
 	})
-	deleteButton := widget.NewButtonWithIcon("", theme.DeleteIcon(), func() {})
-	saveButton := widget.NewButtonWithIcon("", theme.DocumentSaveIcon(), func() {})
+	deleteButton := widget.NewButtonWithIcon("", theme.DeleteIcon(), func() {
+		data.DeleteValuesByKey(key.Text)
+	})
+	saveButton := widget.NewButtonWithIcon("", theme.DocumentSaveIcon(), func() {
+		data.SaveValuesByKeyAndValue(key.Text, value.Text)
+	})
 
 	top := container.NewBorder(
 		nil,
@@ -128,9 +113,6 @@ func newDetail() fyne.CanvasObject {
 		container.NewHBox(category, refreshButton, deleteButton, saveButton),
 		container.NewHBox(keyLabel, key, TtlLabel, TTL),
 	)
-
-	value := widget.NewEntryWithData(data.Value)
-	value.Validator = nil
 
 	return container.NewBorder(top, nil, nil, nil, value)
 }
