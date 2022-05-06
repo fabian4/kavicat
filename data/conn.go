@@ -9,6 +9,7 @@ var (
 	redisConnKeys []string
 	Keys          = binding.NewStringList()
 	Conns         = binding.NewStringList()
+	Key           = binding.NewString()
 	Value         = binding.NewString()
 )
 
@@ -25,7 +26,7 @@ func SetConnInfoById(id int) string {
 
 func SetValuesByKeyId(id int) {
 	key, _ := Keys.GetValue(id)
-	fmt.Println(key)
+	_ = Key.Set(key)
 	_ = Value.Set(get(key))
 }
 

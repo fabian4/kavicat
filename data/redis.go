@@ -2,7 +2,6 @@ package data
 
 import (
 	"context"
-	"fmt"
 	"github.com/fabian4/kavicat/event"
 	"github.com/go-redis/redis/v8"
 )
@@ -77,7 +76,6 @@ func getRedisKeys(client *redis.Client) []string {
 
 func get(key string) string {
 	value := rdc.Get(ctx, key).Val()
-	fmt.Println(value)
 	return value
 }
 

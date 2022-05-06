@@ -83,10 +83,6 @@ func newHeadInfo() fyne.CanvasObject {
 }
 
 func newKeys() fyne.CanvasObject {
-	//data := make([]string, 8)
-	//for i := range data {
-	//	data[i] = "Key " + strconv.Itoa(i)
-	//
 	bindData := data.Keys
 
 	list := widget.NewListWithData(bindData,
@@ -106,10 +102,11 @@ func newKeys() fyne.CanvasObject {
 
 func newDetail() fyne.CanvasObject {
 	keyLabel := widget.NewLabel("Key")
-	key := widget.NewEntry()
-	key.SetText("keyyyyyy")
+	key := widget.NewEntryWithData(data.Key)
 	key.Wrapping = fyne.TextWrapOff
-	key.Refresh()
+	key.Validator = nil
+	key.SetPlaceHolder("  ")
+	//key.Refresh()
 	category := widget.NewButton("String", func() {})
 
 	category.Disable()
@@ -118,7 +115,9 @@ func newDetail() fyne.CanvasObject {
 	TTL := widget.NewEntry()
 	TTL.SetText("-1")
 
-	refreshButton := widget.NewButtonWithIcon("", theme.MediaReplayIcon(), func() {})
+	refreshButton := widget.NewButtonWithIcon("", theme.MediaReplayIcon(), func() {
+
+	})
 	deleteButton := widget.NewButtonWithIcon("", theme.DeleteIcon(), func() {})
 	saveButton := widget.NewButtonWithIcon("", theme.DocumentSaveIcon(), func() {})
 
@@ -131,6 +130,7 @@ func newDetail() fyne.CanvasObject {
 	)
 
 	value := widget.NewEntryWithData(data.Value)
+	value.Validator = nil
 
 	return container.NewBorder(top, nil, nil, nil, value)
 }
