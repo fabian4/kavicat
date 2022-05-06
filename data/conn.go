@@ -2,6 +2,7 @@ package data
 
 import (
 	"fyne.io/fyne/v2/data/binding"
+	"strconv"
 )
 
 var (
@@ -10,6 +11,7 @@ var (
 	Conns         = binding.NewStringList()
 	Key           = binding.NewString()
 	Value         = binding.NewString()
+	//Count         = binding.BindString()
 )
 
 func SetConnInfoById(id int) {
@@ -51,6 +53,7 @@ func SaveValuesByKeyAndValue(key string, value string) {
 func refreshKeyLists() {
 	redisKeys := getRedisKeys()
 	_ = Keys.Set(redisKeys)
+	_ = Count.Set("keys: " + strconv.Itoa(len(redisKeys)))
 }
 
 func GetRedisConnKeys() binding.StringList {
