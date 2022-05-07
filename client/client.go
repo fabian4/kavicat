@@ -22,15 +22,6 @@ func Init() {
 	Window = App.NewWindow("kavicat")
 	Window.Resize(fyne.NewSize(1000, 600))
 	Window.CenterOnScreen()
-	//Window.SetMainMenu(NewMenu())
-
-	//bottom := container.NewVBox(widget.NewSeparator(), NewBottom())
-	//
-	//split := container.NewHSplit(NewList(), NewWork())
-	//split.Offset = 0.2
-	//
-	//content := container.NewBorder(nil, bottom, nil, nil, split)
-
 	NewHome()
 
 	Window.ShowAndRun()
