@@ -10,37 +10,6 @@ import (
 	"strings"
 )
 
-func NewMenu() *fyne.MainMenu {
-
-	return fyne.NewMainMenu(
-		newHome(),
-		newConn(),
-	)
-}
-
-func newHome() *fyne.Menu {
-	aa := fyne.NewMenuItem("aa", func() {
-		success := dialog.NewInformation("Success", "success", GetWindow())
-		success.Resize(fyne.NewSize(200, 150))
-		success.Show()
-	})
-	aa.IsQuit = true
-	return fyne.NewMenu(
-		"Home",
-		aa,
-	)
-}
-
-func newConn() *fyne.Menu {
-
-	return fyne.NewMenu(
-		"New",
-		fyne.NewMenuItem("For Redis", newConnectionForRedis),
-		fyne.NewMenuItem("For LevelDB", newConnectionForLevelDB),
-		fyne.NewMenuItem("For Badger", newConnectionForBadger),
-	)
-}
-
 func newConnectionForRedis() {
 
 	host := widget.NewEntry()
@@ -78,7 +47,7 @@ func newConnectionForRedis() {
 		},
 		GetWindow(),
 	)
-	form.Resize(fyne.NewSize(400, 300))
+	form.Resize(fyne.NewSize(400, 250))
 	form.Show()
 }
 

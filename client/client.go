@@ -31,6 +31,16 @@ func Init() {
 	//
 	//content := container.NewBorder(nil, bottom, nil, nil, split)
 
+	NewHome()
+
+	Window.ShowAndRun()
+}
+
+func GetWindow() fyne.Window {
+	return Window
+}
+
+func NewHome() {
 	buttons := container.NewVBox(
 		widget.NewButton("Establish connection for Redis", newConnectionForRedis),
 		widget.NewButton("Establish connection for Badger", func() {
@@ -41,20 +51,14 @@ func Init() {
 		}),
 	)
 	content := container.NewCenter(buttons)
-
 	Window.SetContent(content)
-
-	Window.ShowAndRun()
 }
 
 func RegisterEvents() {
+	event.Register("switchUI", SwitchUI)
 	event.Register("connection_fail", ConnectionFail)
 	event.Register("connection_exist", ConnectionExist)
 	event.Register("connection_success", ConnectionSuccess)
 	event.Register("operation_fail", OperationFail)
 	event.Register("operation_success", OperationSuccess)
-}
-
-func GetWindow() fyne.Window {
-	return Window
 }

@@ -8,11 +8,12 @@ import (
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 	"github.com/fabian4/kavicat/data"
+	"github.com/fabian4/kavicat/event"
 	"log"
 	"strconv"
 )
 
-func NewWork() {
+func NewRedisWork() {
 	split := container.NewHSplit(newKeys(), newDetail())
 	split.Offset = 0.2
 	work := container.NewBorder(newHeadInfo(), nil, nil, nil, split)
@@ -50,7 +51,9 @@ func newHeadInfo() fyne.CanvasObject {
 	return container.NewBorder(
 		nil,
 		widget.NewSeparator(),
-		widget.NewButtonWithIcon("Home", theme.HomeIcon(), func() {}),
+		widget.NewButtonWithIcon("Home", theme.HomeIcon(), func() {
+			event.Emit("switchUI", "Home")
+		}),
 		container.NewHBox(
 			widget.NewLabelWithData(data.Client),
 			widget.NewSeparator(),

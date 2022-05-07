@@ -42,6 +42,8 @@ func NewRedisConn(host string, port string, auth string) {
 	event.Emit("connection_success", "Connected", host+" : "+port)
 	rdc.Del(ctx, "key")
 
+	event.Emit("switchUI", "Redis")
+
 }
 
 func SwitchDB(index int) {
@@ -121,6 +123,7 @@ func save(key string, value string) {
 		event.Emit("operation_fail", "Save Fail", err.Error())
 	}
 	event.Emit("operation_success", "Save success", "save [ key: "+key+", value: "+value+" ]")
+	event.Emit("switchUI", "Redis")
 }
 
 func getInfo() {
