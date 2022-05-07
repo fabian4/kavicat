@@ -14,29 +14,45 @@ var (
 )
 
 func Init() {
+
+	RegisterEvents()
+
 	App = app.NewWithID("github.com/fabian4/kavicat")
 	//App.Settings().SetTheme(customer.NewTheme())
 	Window = App.NewWindow("kavicat")
 	Window.Resize(fyne.NewSize(1000, 600))
 	Window.CenterOnScreen()
-	Window.SetMainMenu(NewMenu())
+	//Window.SetMainMenu(NewMenu())
 
-	bottom := container.NewVBox(widget.NewSeparator(), NewBottom())
+	//bottom := container.NewVBox(widget.NewSeparator(), NewBottom())
+	//
+	//split := container.NewHSplit(NewList(), NewWork())
+	//split.Offset = 0.2
+	//
+	//content := container.NewBorder(nil, bottom, nil, nil, split)
 
-	split := container.NewHSplit(NewList(), NewWork())
-	split.Offset = 0.2
+	buttons := container.NewVBox(
+		widget.NewButton("Establish connection for Redis", newConnectionForRedis),
+		widget.NewButton("Establish connection for Badger", func() {
 
+		}),
+		widget.NewButton("Establish connection for LevelDB", func() {
+
+		}),
+	)
+	content := container.NewCenter(buttons)
+
+	Window.SetContent(content)
+
+	Window.ShowAndRun()
+}
+
+func RegisterEvents() {
 	event.Register("connection_fail", ConnectionFail)
 	event.Register("connection_exist", ConnectionExist)
 	event.Register("connection_success", ConnectionSuccess)
 	event.Register("operation_fail", OperationFail)
 	event.Register("operation_success", OperationSuccess)
-
-	content := container.NewBorder(nil, bottom, nil, nil, split)
-
-	Window.SetContent(content)
-
-	Window.ShowAndRun()
 }
 
 func GetWindow() fyne.Window {

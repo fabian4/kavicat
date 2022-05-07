@@ -3,12 +3,16 @@ package client
 import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/dialog"
+	"github.com/fabian4/kavicat/data"
 )
 
 func ConnectionSuccess(args ...string) {
 	remindInfo := dialog.NewInformation(args[0], args[1], GetWindow())
 	remindInfo.Resize(fyne.NewSize(200, 150))
 	remindInfo.Show()
+
+	NewWork()
+	data.RefreshKeyLists()
 }
 
 func ConnectionExist(args ...string) {
@@ -20,11 +24,6 @@ func ConnectionExist(args ...string) {
 func ConnectionFail(args ...string) {
 	remindInfo := dialog.NewInformation(args[0], args[1], GetWindow())
 	remindInfo.Resize(fyne.NewSize(200, 150))
-	//switch args[2] {
-	//case "redis":
-	//	dialog.SetOnClosed(newConnectionForRedis)
-	//	break
-	//}
 	remindInfo.Show()
 }
 

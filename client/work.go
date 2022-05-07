@@ -12,10 +12,12 @@ import (
 	"strconv"
 )
 
-func NewWork() fyne.CanvasObject {
+func NewWork() {
 	split := container.NewHSplit(newKeys(), newDetail())
 	split.Offset = 0.2
-	return container.NewBorder(newHeadInfo(), nil, nil, nil, split)
+	work := container.NewBorder(newHeadInfo(), nil, nil, nil, split)
+	win := GetWindow()
+	win.SetContent(work)
 }
 
 func newHeadInfo() fyne.CanvasObject {
@@ -58,7 +60,7 @@ func newHeadInfo() fyne.CanvasObject {
 			widget.NewSeparator(),
 			selectEntry,
 		),
-		widget.NewLabel("127.0.0.1:6379"),
+		widget.NewLabel(data.GetConnName()),
 	)
 }
 

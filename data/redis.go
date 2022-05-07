@@ -2,39 +2,34 @@ package data
 
 import (
 	"context"
+	"fyne.io/fyne/v2/data/binding"
 	"github.com/fabian4/kavicat/event"
 	"github.com/go-redis/redis/v8"
 	"log"
 	"regexp"
+	"strconv"
 )
 
 var (
-	rdc        *redis.Client
-	ctx        = context.Background()
-	redisConns = make(map[string]*RedisConn)
+	connAuth string
+	connName string
+	rdc      *redis.Client
+	Key      = binding.NewString()
+	Value    = binding.NewString()
+	Count    = binding.NewString()
+	Client   = binding.NewString()
+	Memory   = binding.NewString()
+	ctx      = context.Background()
+	Keys     = binding.NewStringList()
 )
 
-type RedisConn struct {
-	Host   string
-	Port   string
-	Auth   string
-	Name   string
-	Client *redis.Client
-}
-
-func NewRedisConn(redisConn *RedisConn) {
-	if redisConn.Name == "" {
-		redisConn.Name = redisConn.Host + ":" + redisConn.Port
-	}
-
-	if HasRedisConn(redisConn.Name) {
-		event.Emit("connection_exist", "The connection exists, No need to recreate")
-		return
-	}
+func NewRedisConn(host string, port string, auth string) {
+	connAuth = auth
+	connName = host + ":" + port
 
 	rdc = redis.NewClient(&redis.Options{
-		Addr:     redisConn.Host + ":" + redisConn.Port,
-		Password: redisConn.Auth,
+		Addr:     host + ":" + port,
+		Password: auth,
 		DB:       0,
 	})
 
@@ -44,42 +39,70 @@ func NewRedisConn(redisConn *RedisConn) {
 		return
 	}
 
-	event.Emit("connection_success", "Connected", redisConn.Host+" : "+redisConn.Port)
+	event.Emit("connection_success", "Connected", host+" : "+port)
 	rdc.Del(ctx, "key")
-
-	redisConn.Client = rdc
-	AddRedisConn(redisConn)
 
 }
 
-func ReconnectRedis(redisConn *RedisConn, index int) {
+func SwitchDB(index int) {
 	rdc = redis.NewClient(&redis.Options{
-		Addr:     redisConn.Host + ":" + redisConn.Port,
-		Password: redisConn.Auth,
+		Addr:     connName,
+		Password: connAuth,
 		DB:       index,
 	})
+	RefreshKeyLists()
+}
 
-	err := rdc.Set(ctx, "key", "value", 0).Err()
-	if err != nil {
-		event.Emit("connection_fail", "Connection Fail", err.Error(), "redis")
-		return
-	}
+func GetConnName() string {
+	return connName
+}
 
-	event.Emit("connection_success", "Connected", redisConn.Host+" : "+redisConn.Port)
-	rdc.Del(ctx, "key")
+func SetValuesByKeyId(id int) {
+	key, _ := Keys.GetValue(id)
+	value := rdc.Get(ctx, key).Val()
+	log.Println("get " + key + ": " + value)
+	_ = Key.Set(key)
+	_ = Value.Set(value)
 
-	redisConn.Client = rdc
+	RefreshKeyLists()
+}
+
+func SetValuesByKey(key string) {
+	value := rdc.Get(ctx, key).Val()
+	log.Println("get " + key + ": " + value)
+	_ = Value.Set(value)
+
+	RefreshKeyLists()
+}
+
+func DeleteValuesByKey(key string) {
+	_ = Key.Set(" ")
+	_ = Value.Set(" ")
+	del(key)
+
+	RefreshKeyLists()
+}
+
+func SaveValuesByKeyAndValue(key string, value string) {
+	_ = Key.Set(key)
+	_ = Value.Set(value)
+	save(key, value)
+
+	RefreshKeyLists()
+}
+
+func RefreshKeyLists() {
+	redisKeys := getRedisKeys()
+	_ = Keys.Set(redisKeys)
+	_ = Key.Set("")
+	_ = Value.Set("")
+	_ = Count.Set("keys: " + strconv.Itoa(len(redisKeys)))
+	getInfo()
 }
 
 func getRedisKeys() []string {
 	keys := rdc.Keys(ctx, "*").Val()
 	return keys
-}
-
-func get(key string) string {
-	value := rdc.Get(ctx, key).Val()
-	log.Println("get " + key + ": " + value)
-	return value
 }
 
 func del(key string) {
@@ -110,42 +133,4 @@ func getInfo() {
 	re2 := regexp.MustCompile("used_memory_human:[0-9]*\\.?[0-9]*K")
 	memory := re2.FindAllString(memoryInfo, -1)[0]
 	_ = Memory.Set("memory: " + memory[18:])
-}
-
-func AddRedisConn(redisConn *RedisConn) {
-	redisConns[redisConn.Name] = redisConn
-	appendRedisConnkeys(redisConn.Name)
-}
-
-func GetRedisConn(name string) *RedisConn {
-	return redisConns[name]
-}
-
-func HasRedisConn(name string) bool {
-	_, found := redisConns[name]
-	return found
-}
-
-func InitRedisConns() {
-	redisConns["127.0.0.1:6379"] = &RedisConn{
-		Host:   "127.0.0.1",
-		Port:   "6379",
-		Auth:   "",
-		Name:   "",
-		Client: nil,
-	}
-	redisConns["192.168.34.67:2579"] = &RedisConn{
-		Host:   "192.168.34.67",
-		Port:   "2579",
-		Auth:   "",
-		Name:   "",
-		Client: nil,
-	}
-	redisConns["10.103.24.3:6738"] = &RedisConn{
-		Host:   "10.103.24.3",
-		Port:   "6738",
-		Auth:   "",
-		Name:   "",
-		Client: nil,
-	}
 }
