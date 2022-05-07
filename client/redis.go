@@ -86,7 +86,7 @@ func newRedisKeys() fyne.CanvasObject {
 }
 
 func newRedisDetail() fyne.CanvasObject {
-	keyLabel := widget.NewLabel("Key")
+	keyLabel := widget.NewLabel("Key: ")
 	key := widget.NewEntryWithData(data.RedisKey)
 	key.Wrapping = fyne.TextWrapOff
 	key.Validator = nil
@@ -114,7 +114,7 @@ func newRedisDetail() fyne.CanvasObject {
 	})
 
 	addButton := widget.NewButtonWithIcon("", theme.ContentAddIcon(), func() {
-		addNewContent()
+		addNewRedisContent()
 	})
 
 	top := container.NewBorder(
@@ -128,7 +128,7 @@ func newRedisDetail() fyne.CanvasObject {
 	return container.NewBorder(top, nil, nil, nil, value)
 }
 
-func addNewContent() {
+func addNewRedisContent() {
 
 	key := widget.NewEntry()
 	key.PlaceHolder = "Input your key here."

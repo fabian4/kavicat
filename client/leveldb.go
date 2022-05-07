@@ -50,45 +50,42 @@ func newLevelDBKeys() fyne.CanvasObject {
 }
 
 func newLevelDBDetail() fyne.CanvasObject {
-	keyLabel := widget.NewLabel("Key")
+	keyLabel := widget.NewLabel("Key: ")
 	key := widget.NewEntryWithData(data.LevelDBKey)
 	key.Wrapping = fyne.TextWrapOff
 	key.Validator = nil
 	key.SetPlaceHolder("  ")
 	key.Disable()
-	category := widget.NewButton("String", func() {})
-
-	category.Disable()
-
-	TtlLabel := widget.NewLabel("TTL")
-	TTL := widget.NewEntry()
-	TTL.SetText("-1")
 
 	value := widget.NewEntryWithData(data.LevelDBValue)
+	value.Wrapping = fyne.TextWrapOff
 	value.Validator = nil
 
-	//refreshButton := widget.NewButtonWithIcon("", theme.MediaReplayIcon(), func() {
-	//	data.SetValuesByKey(key.Text)
-	//})
-	//deleteButton := widget.NewButtonWithIcon("", theme.DeleteIcon(), func() {
-	//	data.DeleteValuesByKey(key.Text)
-	//})
-	//saveButton := widget.NewButtonWithIcon("", theme.DocumentSaveIcon(), func() {
-	//	data.SaveValuesByKeyAndValue(key.Text, value.Text)
-	//})
+	refreshButton := widget.NewButtonWithIcon("", theme.MediaReplayIcon(), func() {
+		data.SetLevelDBValuesByKey(key.Text)
+	})
+	deleteButton := widget.NewButtonWithIcon("", theme.DeleteIcon(), func() {
+		data.DeleteLevelDBValuesByKey(key.Text)
+	})
+	saveButton := widget.NewButtonWithIcon("", theme.DocumentSaveIcon(), func() {
+		data.SaveLevelDBValuesByKeyAndValue(key.Text, value.Text)
+	})
 
-	//addButton := widget.NewButtonWithIcon("", theme.ContentAddIcon(), func() {
-	//	addNewContent()
-	//})
+	addButton := widget.NewButtonWithIcon("", theme.ContentAddIcon(), func() {
+		addNewLevelDBContent()
+	})
 
 	top := container.NewBorder(
 		nil,
 		nil,
 		nil,
-		nil,
-		//container.NewHBox(category, refreshButton, deleteButton, saveButton, addButton),
-		container.NewHBox(keyLabel, key, TtlLabel, TTL),
+		container.NewHBox(refreshButton, deleteButton, saveButton, addButton),
+		container.NewHBox(keyLabel, key),
 	)
 
 	return container.NewBorder(top, nil, nil, nil, value)
+}
+
+func addNewLevelDBContent() {
+
 }

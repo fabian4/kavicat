@@ -32,10 +32,44 @@ func NewLevelDBConn(uri string) {
 
 func SetLevelDBValuesByKeyId(id int) {
 	key, _ := LevelDBKeys.GetValue(id)
-	value := rdc.Get(ctx, key).Val()
-	log.Println("get " + key + ": " + value)
-	_ = RedisKey.Set(key)
-	_ = RedisValue.Set(value)
+	value, _ := db.Get([]byte(key), nil)
+	log.Println("get " + key + ": " + string(value))
+	_ = LevelDBKey.Set(key)
+	_ = LevelDBValue.Set(string(value))
 
-	RefreshRedisKeyLists()
+	RefreshLevelDBKeyLists()
+}
+
+func SetLevelDBValuesByKey(key string) {
+	value, _ := db.Get([]byte(key), nil)
+	log.Println("get " + key + ": " + string(value))
+	_ = LevelDBValue.Set(string(value))
+
+	RefreshLevelDBKeyLists()
+}
+
+func DeleteLevelDBValuesByKey(key string) {
+	_ = db.Delete([]byte(key), nil)
+	log.Println("del " + key)
+	_ = LevelDBKey.Set("")
+	_ = LevelDBValue.Set("")
+
+	RefreshLevelDBKeyLists()
+}
+
+func SaveLevelDBValuesByKeyAndValue(key string, value string) {
+	log.Println("save " + key + ": " + value)
+	_ = db.Put([]byte(key), []byte(value), nil)
+
+	RefreshLevelDBKeyLists()
+}
+
+func RefreshLevelDBKeyLists() {
+	_ = LevelDBKeys.Set(nil)
+	iter := db.NewIterator(nil, nil)
+	for iter.Next() {
+		key := iter.Key()
+		_ = LevelDBKeys.Append(string(key))
+	}
+	iter.Release()
 }
