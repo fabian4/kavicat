@@ -34,12 +34,8 @@ func GetWindow() fyne.Window {
 func NewHome() {
 	buttons := container.NewVBox(
 		widget.NewButton("Establish connection for Redis", newConnectionForRedis),
-		widget.NewButton("Establish connection for Badger", func() {
-
-		}),
-		widget.NewButton("Establish connection for LevelDB", func() {
-
-		}),
+		widget.NewButton("Establish connection for Badger", newConnectionForBadger),
+		widget.NewButton("Establish connection for LevelDB", newConnectionForLevelDB),
 	)
 	content := container.NewCenter(buttons)
 	Window.SetContent(content)

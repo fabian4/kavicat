@@ -11,21 +11,21 @@ import (
 )
 
 var (
-	connAuth string
-	connName string
-	rdc      *redis.Client
-	Key      = binding.NewString()
-	Value    = binding.NewString()
-	Count    = binding.NewString()
-	Client   = binding.NewString()
-	Memory   = binding.NewString()
-	ctx      = context.Background()
-	Keys     = binding.NewStringList()
+	RedisConnAuth string
+	RedisConnName string
+	rdc           *redis.Client
+	ctx           = context.Background()
+	RedisKey      = binding.NewString()
+	RedisValue    = binding.NewString()
+	RedisCount    = binding.NewString()
+	RedisClient   = binding.NewString()
+	RedisMemory   = binding.NewString()
+	RedisKeys     = binding.NewStringList()
 )
 
 func NewRedisConn(host string, port string, auth string) {
-	connAuth = auth
-	connName = host + ":" + port
+	RedisConnAuth = auth
+	RedisConnName = host + ":" + port
 
 	rdc = redis.NewClient(&redis.Options{
 		Addr:     host + ":" + port,
@@ -48,57 +48,53 @@ func NewRedisConn(host string, port string, auth string) {
 
 func SwitchDB(index int) {
 	rdc = redis.NewClient(&redis.Options{
-		Addr:     connName,
-		Password: connAuth,
+		Addr:     RedisConnName,
+		Password: RedisConnAuth,
 		DB:       index,
 	})
-	RefreshKeyLists()
+	RefreshRedisKeyLists()
 }
 
-func GetConnName() string {
-	return connName
-}
-
-func SetValuesByKeyId(id int) {
-	key, _ := Keys.GetValue(id)
+func SetRedisValuesByKeyId(id int) {
+	key, _ := RedisKeys.GetValue(id)
 	value := rdc.Get(ctx, key).Val()
 	log.Println("get " + key + ": " + value)
-	_ = Key.Set(key)
-	_ = Value.Set(value)
+	_ = RedisKey.Set(key)
+	_ = RedisValue.Set(value)
 
-	RefreshKeyLists()
+	RefreshRedisKeyLists()
 }
 
-func SetValuesByKey(key string) {
+func SetRedisValuesByKey(key string) {
 	value := rdc.Get(ctx, key).Val()
 	log.Println("get " + key + ": " + value)
-	_ = Value.Set(value)
+	_ = RedisValue.Set(value)
 
-	RefreshKeyLists()
+	RefreshRedisKeyLists()
 }
 
-func DeleteValuesByKey(key string) {
-	_ = Key.Set(" ")
-	_ = Value.Set(" ")
+func DeleteRedisValuesByKey(key string) {
+	_ = RedisKey.Set(" ")
+	_ = RedisValue.Set(" ")
 	del(key)
 
-	RefreshKeyLists()
+	RefreshRedisKeyLists()
 }
 
-func SaveValuesByKeyAndValue(key string, value string) {
-	_ = Key.Set(key)
-	_ = Value.Set(value)
+func SaveRedisValuesByKeyAndValue(key string, value string) {
+	_ = RedisKey.Set(key)
+	_ = RedisValue.Set(value)
 	save(key, value)
 
-	RefreshKeyLists()
+	RefreshRedisKeyLists()
 }
 
-func RefreshKeyLists() {
+func RefreshRedisKeyLists() {
 	redisKeys := getRedisKeys()
-	_ = Keys.Set(redisKeys)
-	_ = Key.Set("")
-	_ = Value.Set("")
-	_ = Count.Set("keys: " + strconv.Itoa(len(redisKeys)))
+	_ = RedisKeys.Set(redisKeys)
+	_ = RedisKey.Set("")
+	_ = RedisValue.Set("")
+	_ = RedisCount.Set("keys: " + strconv.Itoa(len(redisKeys)))
 	getInfo()
 }
 
@@ -130,10 +126,10 @@ func getInfo() {
 	clientsInfo := rdc.Info(ctx, "Clients").Val()
 	re1 := regexp.MustCompile("connected_clients:[0-9]*")
 	clients := re1.FindAllString(clientsInfo, -1)[0]
-	_ = Client.Set("clients: " + clients[18:])
+	_ = RedisClient.Set("clients: " + clients[18:])
 
 	memoryInfo := rdc.Info(ctx, "Memory").Val()
 	re2 := regexp.MustCompile("used_memory_human:[0-9]*\\.?[0-9]*K")
 	memory := re2.FindAllString(memoryInfo, -1)[0]
-	_ = Memory.Set("memory: " + memory[18:])
+	_ = RedisMemory.Set("memory: " + memory[18:])
 }

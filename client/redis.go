@@ -14,14 +14,14 @@ import (
 )
 
 func NewRedisWork() {
-	split := container.NewHSplit(newKeys(), newDetail())
+	split := container.NewHSplit(newRedisKeys(), newRedisDetail())
 	split.Offset = 0.2
-	work := container.NewBorder(newHeadInfo(), nil, nil, nil, split)
+	work := container.NewBorder(newRedisHeadInfo(), nil, nil, nil, split)
 	win := GetWindow()
 	win.SetContent(work)
 }
 
-func newHeadInfo() fyne.CanvasObject {
+func newRedisHeadInfo() fyne.CanvasObject {
 	selectEntry := widget.NewSelect(
 		[]string{
 			"DB-0",
@@ -55,20 +55,20 @@ func newHeadInfo() fyne.CanvasObject {
 			event.Emit("switchUI", "Home")
 		}),
 		container.NewHBox(
-			widget.NewLabelWithData(data.Client),
+			widget.NewLabelWithData(data.RedisClient),
 			widget.NewSeparator(),
-			widget.NewLabelWithData(data.Memory),
+			widget.NewLabelWithData(data.RedisMemory),
 			widget.NewSeparator(),
-			widget.NewLabelWithData(data.Count),
+			widget.NewLabelWithData(data.RedisCount),
 			widget.NewSeparator(),
 			selectEntry,
 		),
-		widget.NewLabel(data.GetConnName()),
+		widget.NewLabel(data.RedisConnName),
 	)
 }
 
-func newKeys() fyne.CanvasObject {
-	bindData := data.Keys
+func newRedisKeys() fyne.CanvasObject {
+	bindData := data.RedisKeys
 
 	list := widget.NewListWithData(bindData,
 		func() fyne.CanvasObject {
@@ -79,15 +79,15 @@ func newKeys() fyne.CanvasObject {
 			o.(*fyne.Container).Objects[0].(*widget.Label).Bind(i.(binding.String))
 		})
 	list.OnSelected = func(id widget.ListItemID) {
-		data.SetValuesByKeyId(id)
+		data.SetRedisValuesByKeyId(id)
 	}
 
 	return list
 }
 
-func newDetail() fyne.CanvasObject {
+func newRedisDetail() fyne.CanvasObject {
 	keyLabel := widget.NewLabel("Key")
-	key := widget.NewEntryWithData(data.Key)
+	key := widget.NewEntryWithData(data.RedisKey)
 	key.Wrapping = fyne.TextWrapOff
 	key.Validator = nil
 	key.SetPlaceHolder("  ")
@@ -100,17 +100,17 @@ func newDetail() fyne.CanvasObject {
 	TTL := widget.NewEntry()
 	TTL.SetText("-1")
 
-	value := widget.NewEntryWithData(data.Value)
+	value := widget.NewEntryWithData(data.RedisValue)
 	value.Validator = nil
 
 	refreshButton := widget.NewButtonWithIcon("", theme.MediaReplayIcon(), func() {
-		data.SetValuesByKey(key.Text)
+		data.SetRedisValuesByKey(key.Text)
 	})
 	deleteButton := widget.NewButtonWithIcon("", theme.DeleteIcon(), func() {
-		data.DeleteValuesByKey(key.Text)
+		data.DeleteRedisValuesByKey(key.Text)
 	})
 	saveButton := widget.NewButtonWithIcon("", theme.DocumentSaveIcon(), func() {
-		data.SaveValuesByKeyAndValue(key.Text, value.Text)
+		data.SaveRedisValuesByKeyAndValue(key.Text, value.Text)
 	})
 
 	addButton := widget.NewButtonWithIcon("", theme.ContentAddIcon(), func() {
@@ -149,7 +149,7 @@ func addNewContent() {
 		"cancel",
 		items,
 		func(bool bool) {
-			data.SaveValuesByKeyAndValue(key.Text, value.Text)
+			data.SaveRedisValuesByKeyAndValue(key.Text, value.Text)
 			log.Println("save " + key.Text + ": " + value.Text)
 		},
 		GetWindow(),

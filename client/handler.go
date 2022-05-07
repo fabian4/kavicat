@@ -1,7 +1,6 @@
 package client
 
 import (
-	"fmt"
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/dialog"
 	"github.com/fabian4/kavicat/data"
@@ -11,7 +10,7 @@ func ConnectionSuccess(args ...string) {
 	remindInfo := dialog.NewInformation(args[0], args[1], GetWindow())
 	remindInfo.Resize(fyne.NewSize(200, 150))
 	remindInfo.Show()
-	data.RefreshKeyLists()
+	data.RefreshRedisKeyLists()
 }
 
 func ConnectionExist(args ...string) {
@@ -39,11 +38,13 @@ func OperationFail(args ...string) {
 }
 
 func SwitchUI(args ...string) {
-	fmt.Println(args[0])
 	switch args[0] {
 	case "Home":
 		NewHome()
 	case "Redis":
 		NewRedisWork()
+	case "LevelDB":
+		NewLevelDBWork()
+
 	}
 }

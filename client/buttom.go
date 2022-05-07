@@ -7,7 +7,7 @@ import (
 
 func NewBottom() fyne.CanvasObject {
 
-	bottom := widget.NewLabel("Built by ===")
+	bottom := widget.NewLabel("fabian")
 
 	return bottom
 }
