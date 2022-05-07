@@ -50,7 +50,7 @@ func newHeadInfo() fyne.CanvasObject {
 	return container.NewBorder(
 		nil,
 		widget.NewSeparator(),
-		nil,
+		widget.NewButtonWithIcon("Home", theme.HomeIcon(), func() {}),
 		container.NewHBox(
 			widget.NewLabelWithData(data.Client),
 			widget.NewSeparator(),
