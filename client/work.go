@@ -43,22 +43,16 @@ func newHeadInfo() fyne.CanvasObject {
 	)
 	selectEntry.SetSelectedIndex(0)
 
-	count := widget.NewLabelWithData(data.Count)
-	count.SetText("keys: /")
-
 	return container.NewBorder(
 		nil,
 		widget.NewSeparator(),
 		nil,
 		container.NewHBox(
-			//widget.NewLabel("clients: "+strconv.FormatInt(info.Clients.ConnectedClients, 10)),
-			widget.NewLabel("clients: 1"),
+			widget.NewLabelWithData(data.Client),
 			widget.NewSeparator(),
-			//widget.NewLabel("memory: "+info.Memory.UsedMemoryHuman),
-			widget.NewLabel("memory: 7349k"),
+			widget.NewLabelWithData(data.Memory),
 			widget.NewSeparator(),
-			//widget.NewLabel("keys: "+strconv.FormatUint(info.Keyspace[0].Keys, 10)),
-			count,
+			widget.NewLabelWithData(data.Count),
 			widget.NewSeparator(),
 			selectEntry,
 		),
@@ -90,6 +84,7 @@ func newDetail() fyne.CanvasObject {
 	key.Wrapping = fyne.TextWrapOff
 	key.Validator = nil
 	key.SetPlaceHolder("  ")
+	key.Disable()
 	category := widget.NewButton("String", func() {})
 
 	category.Disable()

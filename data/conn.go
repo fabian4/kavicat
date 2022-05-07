@@ -11,7 +11,9 @@ var (
 	Conns         = binding.NewStringList()
 	Key           = binding.NewString()
 	Value         = binding.NewString()
-	//Count         = binding.BindString()
+	Count         = binding.NewString()
+	Client        = binding.NewString()
+	Memory        = binding.NewString()
 )
 
 func SetConnInfoById(id int) {
@@ -19,6 +21,7 @@ func SetConnInfoById(id int) {
 	if connection.Client == nil {
 		ReconnectRedis(connection)
 	}
+	_ = Count.Set("keys: /")
 	refreshKeyLists()
 }
 
@@ -32,6 +35,8 @@ func SetValuesByKeyId(id int) {
 
 func SetValuesByKey(key string) {
 	_ = Value.Set(get(key))
+
+	refreshKeyLists()
 }
 
 func DeleteValuesByKey(key string) {
@@ -54,6 +59,7 @@ func refreshKeyLists() {
 	redisKeys := getRedisKeys()
 	_ = Keys.Set(redisKeys)
 	_ = Count.Set("keys: " + strconv.Itoa(len(redisKeys)))
+	getInfo()
 }
 
 func GetRedisConnKeys() binding.StringList {

@@ -5,6 +5,7 @@ import (
 	"github.com/fabian4/kavicat/event"
 	"github.com/go-redis/redis/v8"
 	"log"
+	"regexp"
 )
 
 var (
@@ -97,6 +98,18 @@ func save(key string, value string) {
 		event.Emit("operation_fail", "Save Fail", err.Error())
 	}
 	event.Emit("operation_success", "Save success", "save [ key: "+key+", value: "+value+" ]")
+}
+
+func getInfo() {
+	clientsInfo := rdc.Info(ctx, "Clients").Val()
+	re1 := regexp.MustCompile("connected_clients:[0-9]*")
+	clients := re1.FindAllString(clientsInfo, -1)[0]
+	_ = Client.Set("clients: " + clients[18:])
+
+	memoryInfo := rdc.Info(ctx, "Memory").Val()
+	re2 := regexp.MustCompile("used_memory_human:[0-9]*\\.?[0-9]*K")
+	memory := re2.FindAllString(memoryInfo, -1)[0]
+	_ = Memory.Set("memory: " + memory[18:])
 }
 
 func AddRedisConn(redisConn *RedisConn) {
