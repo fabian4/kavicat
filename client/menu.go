@@ -6,6 +6,8 @@ import (
 	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/widget"
 	"github.com/fabian4/kavicat/data"
+	"log"
+	"strings"
 )
 
 func NewMenu() *fyne.MainMenu {
@@ -31,15 +33,11 @@ func newHome() *fyne.Menu {
 
 func newConn() *fyne.Menu {
 
-	levelDB := fyne.NewMenuItem("For LevelDB", func() {})
-
-	badger := fyne.NewMenuItem("For Badger", func() {})
-
 	return fyne.NewMenu(
 		"New",
 		fyne.NewMenuItem("For Redis", newConnectionForRedis),
-		levelDB,
-		badger,
+		fyne.NewMenuItem("For LevelDB", newConnectionForLevelDB),
+		fyne.NewMenuItem("For Badger", newConnectionForBadger),
 	)
 }
 
@@ -89,4 +87,22 @@ func newConnectionForRedis() {
 	)
 	form.Resize(fyne.NewSize(400, 300))
 	form.Show()
+}
+
+func newConnectionForLevelDB() {
+	folder := dialog.NewFolderOpen(
+		func(uri fyne.ListableURI, err error) {
+			if uri == nil {
+				log.Println("cancelled")
+				return
+			}
+			data.NewLevelDBConn(strings.ReplaceAll(uri.Path(), "/", "\\\\"))
+		}, GetWindow())
+
+	folder.Resize(fyne.NewSize(1000, 800))
+	folder.Show()
+}
+
+func newConnectionForBadger() {
+	// todo: to be done
 }
