@@ -9,6 +9,7 @@ import (
 	"fyne.io/fyne/v2/widget"
 	"github.com/fabian4/kavicat/data"
 	"log"
+	"strconv"
 )
 
 func NewWork() fyne.CanvasObject {
@@ -38,7 +39,8 @@ func newHeadInfo() fyne.CanvasObject {
 			"DB-15",
 		},
 		func(s string) {
-			//fmt.Println("selected", s)
+			index, _ := strconv.Atoi(s[3:])
+			data.SwitchDB(index)
 		},
 	)
 	selectEntry.SetSelectedIndex(0)

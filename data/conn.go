@@ -7,6 +7,7 @@ import (
 
 var (
 	redisConnKeys []string
+	conn          *RedisConn
 	Keys          = binding.NewStringList()
 	Conns         = binding.NewStringList()
 	Key           = binding.NewString()
@@ -18,11 +19,18 @@ var (
 
 func SetConnInfoById(id int) {
 	connection := GetRedisConn(redisConnKeys[id])
+	conn = connection
 	if connection.Client == nil {
-		ReconnectRedis(connection)
+		ReconnectRedis(connection, 0)
 	}
-	_ = Count.Set("keys: /")
 	refreshKeyLists()
+}
+
+func SwitchDB(index int) {
+	if conn != nil {
+		ReconnectRedis(conn, index)
+		refreshKeyLists()
+	}
 }
 
 func SetValuesByKeyId(id int) {

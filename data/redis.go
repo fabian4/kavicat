@@ -52,11 +52,11 @@ func NewRedisConn(redisConn *RedisConn) {
 
 }
 
-func ReconnectRedis(redisConn *RedisConn) {
+func ReconnectRedis(redisConn *RedisConn, index int) {
 	rdc = redis.NewClient(&redis.Options{
 		Addr:     redisConn.Host + ":" + redisConn.Port,
 		Password: redisConn.Auth,
-		DB:       0,
+		DB:       index,
 	})
 
 	//todo: pick a test api
