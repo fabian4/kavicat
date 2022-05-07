@@ -60,6 +60,8 @@ func DeleteLevelDBValuesByKey(key string) {
 func SaveLevelDBValuesByKeyAndValue(key string, value string) {
 	log.Println("save " + key + ": " + value)
 	_ = db.Put([]byte(key), []byte(value), nil)
+	_ = LevelDBKey.Set(key)
+	_ = LevelDBValue.Set(value)
 
 	RefreshLevelDBKeyLists()
 }

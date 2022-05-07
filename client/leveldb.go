@@ -4,10 +4,12 @@ import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/data/binding"
+	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 	"github.com/fabian4/kavicat/data"
 	"github.com/fabian4/kavicat/event"
+	"log"
 )
 
 func NewLevelDBWork() {
@@ -87,5 +89,30 @@ func newLevelDBDetail() fyne.CanvasObject {
 }
 
 func addNewLevelDBContent() {
+	key := widget.NewEntry()
+	key.PlaceHolder = "Input your key here."
+	key.Validator = nil
 
+	value := widget.NewEntry()
+	value.PlaceHolder = "Input your value here."
+	value.Validator = nil
+
+	items := []*widget.FormItem{
+		{Text: "key", Widget: key},
+		{Text: "value", Widget: value},
+	}
+
+	form := dialog.NewForm(
+		"Add key and value",
+		"add",
+		"cancel",
+		items,
+		func(bool bool) {
+			data.SaveLevelDBValuesByKeyAndValue(key.Text, value.Text)
+			log.Println("save " + key.Text + ": " + value.Text)
+		},
+		GetWindow(),
+	)
+	form.Resize(fyne.NewSize(400, 200))
+	form.Show()
 }
