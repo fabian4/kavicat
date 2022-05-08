@@ -26,6 +26,7 @@ func newBadgerHeadInfo() fyne.CanvasObject {
 		nil,
 		widget.NewSeparator(),
 		widget.NewButtonWithIcon("Home", theme.HomeIcon(), func() {
+			data.CloseBadgerConnection()
 			event.Emit("switchUI", "Home")
 		}),
 		nil,

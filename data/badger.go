@@ -18,22 +18,11 @@ var (
 
 func NewBadgerConn(uri string) {
 	badgerDB, _ = badger.Open(badger.DefaultOptions(uri))
-	log.Println("open " + uri)
 	BadgerConnName = strings.ReplaceAll(uri, "\\\\", "\\")
-	_ = badgerDB.View(func(txn *badger.Txn) error {
-		opts := badger.DefaultIteratorOptions
-		opts.PrefetchValues = false
-		it := txn.NewIterator(opts)
-		defer it.Close()
-		for it.Rewind(); it.Valid(); it.Next() {
-			k := it.Item().Key()
-			_ = BadgerKeys.Append(string(k))
-		}
-		return nil
-	})
+	log.Println("open " + BadgerConnName)
+	RefreshBadgerKeyLists()
 	if BadgerKeys.Length() == 0 {
 		event.Emit("empty", "Badger")
-		return
 	}
 	event.Emit("switchUI", "Badger")
 }
@@ -106,4 +95,10 @@ func RefreshBadgerKeyLists() {
 		}
 		return nil
 	})
+}
+
+func CloseBadgerConnection() {
+	_ = badgerDB.Close()
+	_ = BadgerKey.Set("")
+	_ = BadgerValue.Set("")
 }
