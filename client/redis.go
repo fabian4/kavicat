@@ -52,6 +52,7 @@ func newRedisHeadInfo() fyne.CanvasObject {
 		nil,
 		widget.NewSeparator(),
 		widget.NewButtonWithIcon("Home", theme.HomeIcon(), func() {
+			data.CloseRedisConnection()
 			event.Emit("switchUI", "Home")
 		}),
 		container.NewHBox(

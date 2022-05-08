@@ -28,7 +28,6 @@ func NewLevelDBConn(uri string) {
 	iter.Release()
 	if LevelDBKeys.Length() == 0 {
 		event.Emit("empty", "LevelDB")
-		return
 	}
 	event.Emit("switchUI", "LevelDB")
 }
@@ -77,4 +76,10 @@ func RefreshLevelDBKeyLists() {
 		_ = LevelDBKeys.Append(string(key))
 	}
 	iter.Release()
+}
+
+func CloseLevelDBConnection() {
+	_ = levelDB.Close()
+	_ = LevelDBKey.Set("")
+	_ = LevelDBValue.Set("")
 }

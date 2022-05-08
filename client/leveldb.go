@@ -26,6 +26,7 @@ func newLevelDBHeadInfo() fyne.CanvasObject {
 		nil,
 		widget.NewSeparator(),
 		widget.NewButtonWithIcon("Home", theme.HomeIcon(), func() {
+			data.CloseLevelDBConnection()
 			event.Emit("switchUI", "Home")
 		}),
 		nil,

@@ -133,3 +133,9 @@ func getInfo() {
 	memory := re2.FindAllString(memoryInfo, -1)[0]
 	_ = RedisMemory.Set("memory: " + memory[18:])
 }
+
+func CloseRedisConnection() {
+	_ = rdc.Close()
+	_ = RedisKey.Set("")
+	_ = RedisValue.Set("")
+}
