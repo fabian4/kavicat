@@ -7,26 +7,26 @@ import (
 )
 
 func ConnectionSuccess(args ...string) {
-	remindInfo := dialog.NewInformation(args[0], args[1], GetWindow())
+	remindInfo := dialog.NewInformation(args[0], args[1], Window)
 	remindInfo.Resize(fyne.NewSize(200, 150))
 	remindInfo.Show()
 	data.RefreshRedisKeyLists()
 }
 
 func ConnectionFail(args ...string) {
-	remindInfo := dialog.NewInformation(args[0], args[1], GetWindow())
+	remindInfo := dialog.NewInformation(args[0], args[1], Window)
 	remindInfo.Resize(fyne.NewSize(200, 150))
 	remindInfo.Show()
 }
 
 func OperationSuccess(args ...string) {
-	remindInfo := dialog.NewInformation(args[0], args[1], GetWindow())
+	remindInfo := dialog.NewInformation(args[0], args[1], Window)
 	remindInfo.Resize(fyne.NewSize(200, 150))
 	remindInfo.Show()
 }
 
 func OperationFail(args ...string) {
-	remindInfo := dialog.NewInformation("Operation Fail", args[0], GetWindow())
+	remindInfo := dialog.NewInformation("Operation Fail", args[0], Window)
 	remindInfo.Resize(fyne.NewSize(200, 150))
 	remindInfo.Show()
 }
@@ -45,7 +45,7 @@ func SwitchUI(args ...string) {
 }
 
 func Empty(args ...string) {
-	remindInfo := dialog.NewInformation(args[0], "It seems to be an empty database", GetWindow())
+	remindInfo := dialog.NewInformation(args[0], "It seems to be an empty database", Window)
 	remindInfo.Resize(fyne.NewSize(200, 150))
 	remindInfo.Show()
 }

@@ -44,9 +44,7 @@ func newConnectionForRedis() {
 			if bool {
 				data.NewRedisConn(host.Text, port.Text, auth.Text)
 			}
-		},
-		GetWindow(),
-	)
+		}, Window)
 	form.Resize(fyne.NewSize(400, 250))
 	form.Show()
 }
@@ -59,7 +57,7 @@ func newConnectionForLevelDB() {
 				return
 			}
 			data.NewLevelDBConn(strings.ReplaceAll(uri.Path(), "/", "\\\\"))
-		}, GetWindow())
+		}, Window)
 
 	folder.Resize(fyne.NewSize(1000, 800))
 	folder.Show()
@@ -73,8 +71,7 @@ func newConnectionForBadger() {
 				return
 			}
 			data.NewBadgerConn(strings.ReplaceAll(uri.Path(), "/", "\\\\"))
-		}, GetWindow())
-
+		}, Window)
 	folder.Resize(fyne.NewSize(1000, 800))
 	folder.Show()
 }

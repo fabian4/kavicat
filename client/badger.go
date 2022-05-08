@@ -16,8 +16,7 @@ func NewBadgerWork() {
 	split := container.NewHSplit(newBadgerKeys(), newBadgerDetail())
 	split.Offset = 0.2
 	work := container.NewBorder(newBadgerHeadInfo(), nil, nil, nil, split)
-	win := GetWindow()
-	win.SetContent(work)
+	Window.SetContent(work)
 }
 
 func newBadgerHeadInfo() fyne.CanvasObject {
@@ -112,7 +111,7 @@ func addNewBadgerContent() {
 			data.SaveBadgerValuesByKeyAndValue(key.Text, value.Text)
 			log.Println("save " + key.Text + ": " + value.Text)
 		},
-		GetWindow(),
+		Window,
 	)
 	form.Resize(fyne.NewSize(400, 200))
 	form.Show()

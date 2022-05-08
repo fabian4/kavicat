@@ -17,8 +17,7 @@ func NewRedisWork() {
 	split := container.NewHSplit(newRedisKeys(), newRedisDetail())
 	split.Offset = 0.2
 	work := container.NewBorder(newRedisHeadInfo(), nil, nil, nil, split)
-	win := GetWindow()
-	win.SetContent(work)
+	Window.SetContent(work)
 }
 
 func newRedisHeadInfo() fyne.CanvasObject {
@@ -152,9 +151,7 @@ func addNewRedisContent() {
 		func(bool bool) {
 			data.SaveRedisValuesByKeyAndValue(key.Text, value.Text)
 			log.Println("save " + key.Text + ": " + value.Text)
-		},
-		GetWindow(),
-	)
+		}, Window)
 	form.Resize(fyne.NewSize(400, 200))
 	form.Show()
 }

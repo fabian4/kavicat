@@ -27,10 +27,6 @@ func Init() {
 	Window.ShowAndRun()
 }
 
-func GetWindow() fyne.Window {
-	return Window
-}
-
 func NewHome() {
 	buttons := container.NewVBox(
 		widget.NewButton("Establish connection for Redis", newConnectionForRedis),
