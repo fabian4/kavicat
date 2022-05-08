@@ -7,7 +7,7 @@ import (
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
 	"github.com/fabian4/kavicat/event"
-	"path/filepath"
+	"github.com/fabian4/kavicat/resource"
 )
 
 var (
@@ -20,7 +20,6 @@ func Init() {
 	RegisterEvents()
 
 	App = app.NewWithID("github.com/fabian4/kavicat")
-	//App.Settings().SetTheme(customer.NewTheme())
 	Window = App.NewWindow("kavicat")
 	Window.Resize(fyne.NewSize(1000, 600))
 	Window.CenterOnScreen()
@@ -30,8 +29,7 @@ func Init() {
 }
 
 func NewHome() {
-	path, _ := filepath.Abs("./logo.png")
-	img := canvas.NewImageFromFile(path)
+	img := canvas.NewImageFromResource(resource.ResourceLogoPng)
 	img.FillMode = canvas.ImageFillOriginal
 	redisButton := widget.NewButton("Establish connection for Redis", newConnectionForRedis)
 	badgerButton := widget.NewButton("Establish connection for Badger", newConnectionForBadger)
