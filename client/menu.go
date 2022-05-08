@@ -66,16 +66,15 @@ func newConnectionForLevelDB() {
 }
 
 func newConnectionForBadger() {
-	//folder := dialog.NewFolderOpen(
-	//	func(uri fyne.ListableURI, err error) {
-	//		if uri == nil {
-	//			log.Println("cancelled")
-	//			return
-	//		}
-	//		data.NewBadgerConn(strings.ReplaceAll(uri.Path(), "/", "\\\\"))
-	//	}, GetWindow())
-	//
-	//folder.Resize(fyne.NewSize(1000, 800))
-	//folder.Show()
-	data.NewBadgerConn("C:\\badger")
+	folder := dialog.NewFolderOpen(
+		func(uri fyne.ListableURI, err error) {
+			if uri == nil {
+				log.Println("cancelled")
+				return
+			}
+			data.NewBadgerConn(strings.ReplaceAll(uri.Path(), "/", "\\\\"))
+		}, GetWindow())
+
+	folder.Resize(fyne.NewSize(1000, 800))
+	folder.Show()
 }
