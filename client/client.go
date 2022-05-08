@@ -42,10 +42,11 @@ func NewHome() {
 }
 
 func RegisterEvents() {
+	event.Register("empty", Empty)
 	event.Register("switchUI", SwitchUI)
+	event.Register("operation_fail", OperationFail)
 	event.Register("connection_fail", ConnectionFail)
 	event.Register("connection_exist", ConnectionExist)
-	event.Register("connection_success", ConnectionSuccess)
-	event.Register("operation_fail", OperationFail)
 	event.Register("operation_success", OperationSuccess)
+	event.Register("connection_success", ConnectionSuccess)
 }

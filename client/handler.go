@@ -48,3 +48,9 @@ func SwitchUI(args ...string) {
 
 	}
 }
+
+func Empty(args ...string) {
+	remindInfo := dialog.NewInformation(args[0], "It seems to be an empty database", GetWindow())
+	remindInfo.Resize(fyne.NewSize(200, 150))
+	remindInfo.Show()
+}

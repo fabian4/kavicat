@@ -18,15 +18,18 @@ var (
 
 func NewLevelDBConn(uri string) {
 	db, _ = leveldb.OpenFile(uri, nil)
+	log.Println("open " + uri)
 	LevelDBConnName = strings.ReplaceAll(uri, "\\\\", "\\")
-
 	iter := db.NewIterator(nil, nil)
 	for iter.Next() {
 		key := iter.Key()
 		_ = LevelDBKeys.Append(string(key))
 	}
 	iter.Release()
-
+	if LevelDBKeys.Length() == 0 {
+		event.Emit("empty", "LevelDB")
+		return
+	}
 	event.Emit("switchUI", "LevelDB")
 }
 
