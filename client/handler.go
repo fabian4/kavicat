@@ -43,9 +43,10 @@ func SwitchUI(args ...string) {
 		NewHome()
 	case "Redis":
 		NewRedisWork()
+	case "Badger":
+		NewBadgerWork()
 	case "LevelDB":
 		NewLevelDBWork()
-
 	}
 }
 

@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	db              *leveldb.DB
+	levelDB         *leveldb.DB
 	LevelDBConnName string
 	LevelDBKey      = binding.NewString()
 	LevelDBValue    = binding.NewString()
@@ -17,10 +17,10 @@ var (
 )
 
 func NewLevelDBConn(uri string) {
-	db, _ = leveldb.OpenFile(uri, nil)
+	levelDB, _ = leveldb.OpenFile(uri, nil)
 	log.Println("open " + uri)
 	LevelDBConnName = strings.ReplaceAll(uri, "\\\\", "\\")
-	iter := db.NewIterator(nil, nil)
+	iter := levelDB.NewIterator(nil, nil)
 	for iter.Next() {
 		key := iter.Key()
 		_ = LevelDBKeys.Append(string(key))
@@ -35,7 +35,7 @@ func NewLevelDBConn(uri string) {
 
 func SetLevelDBValuesByKeyId(id int) {
 	key, _ := LevelDBKeys.GetValue(id)
-	value, _ := db.Get([]byte(key), nil)
+	value, _ := levelDB.Get([]byte(key), nil)
 	log.Println("get " + key + ": " + string(value))
 	_ = LevelDBKey.Set(key)
 	_ = LevelDBValue.Set(string(value))
@@ -44,7 +44,7 @@ func SetLevelDBValuesByKeyId(id int) {
 }
 
 func SetLevelDBValuesByKey(key string) {
-	value, _ := db.Get([]byte(key), nil)
+	value, _ := levelDB.Get([]byte(key), nil)
 	log.Println("get " + key + ": " + string(value))
 	_ = LevelDBValue.Set(string(value))
 
@@ -52,7 +52,7 @@ func SetLevelDBValuesByKey(key string) {
 }
 
 func DeleteLevelDBValuesByKey(key string) {
-	_ = db.Delete([]byte(key), nil)
+	_ = levelDB.Delete([]byte(key), nil)
 	log.Println("del " + key)
 	_ = LevelDBKey.Set("")
 	_ = LevelDBValue.Set("")
@@ -62,7 +62,7 @@ func DeleteLevelDBValuesByKey(key string) {
 
 func SaveLevelDBValuesByKeyAndValue(key string, value string) {
 	log.Println("save " + key + ": " + value)
-	_ = db.Put([]byte(key), []byte(value), nil)
+	_ = levelDB.Put([]byte(key), []byte(value), nil)
 	_ = LevelDBKey.Set(key)
 	_ = LevelDBValue.Set(value)
 
@@ -71,7 +71,7 @@ func SaveLevelDBValuesByKeyAndValue(key string, value string) {
 
 func RefreshLevelDBKeyLists() {
 	_ = LevelDBKeys.Set(nil)
-	iter := db.NewIterator(nil, nil)
+	iter := levelDB.NewIterator(nil, nil)
 	for iter.Next() {
 		key := iter.Key()
 		_ = LevelDBKeys.Append(string(key))
