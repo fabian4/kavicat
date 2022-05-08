@@ -46,7 +46,6 @@ func RegisterEvents() {
 	event.Register("switchUI", SwitchUI)
 	event.Register("operation_fail", OperationFail)
 	event.Register("connection_fail", ConnectionFail)
-	event.Register("connection_exist", ConnectionExist)
 	event.Register("operation_success", OperationSuccess)
 	event.Register("connection_success", ConnectionSuccess)
 }

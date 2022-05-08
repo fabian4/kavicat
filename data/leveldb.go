@@ -20,12 +20,7 @@ func NewLevelDBConn(uri string) {
 	levelDB, _ = leveldb.OpenFile(uri, nil)
 	log.Println("open " + uri)
 	LevelDBConnName = strings.ReplaceAll(uri, "\\\\", "\\")
-	iter := levelDB.NewIterator(nil, nil)
-	for iter.Next() {
-		key := iter.Key()
-		_ = LevelDBKeys.Append(string(key))
-	}
-	iter.Release()
+	RefreshLevelDBKeyLists()
 	if LevelDBKeys.Length() == 0 {
 		event.Emit("empty", "LevelDB")
 	}

@@ -13,12 +13,6 @@ func ConnectionSuccess(args ...string) {
 	data.RefreshRedisKeyLists()
 }
 
-func ConnectionExist(args ...string) {
-	remindInfo := dialog.NewInformation("Connection Exist", args[0], GetWindow())
-	remindInfo.Resize(fyne.NewSize(200, 150))
-	remindInfo.Show()
-}
-
 func ConnectionFail(args ...string) {
 	remindInfo := dialog.NewInformation(args[0], args[1], GetWindow())
 	remindInfo.Resize(fyne.NewSize(200, 150))
