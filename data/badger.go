@@ -20,15 +20,6 @@ func NewBadgerConn(uri string) {
 	badgerDB, _ = badger.Open(badger.DefaultOptions(uri))
 	log.Println("open " + uri)
 	BadgerConnName = strings.ReplaceAll(uri, "\\\\", "\\")
-	//
-	//_ = badgerDB.Update(func(txn *badger.Txn) error {
-	//	_ = txn.Set([]byte("aaa"), []byte("111asdv1"))
-	//	_ = txn.Set([]byte("bbb"), []byte("11asdv11"))
-	//	_ = txn.Set([]byte("ccc"), []byte("111acs1"))
-	//	_ = txn.Set([]byte("eee"), []byte("111avsd1"))
-	//	_ = txn.Set([]byte("dsfvs"), []byte("1av1"))
-	//	return nil
-	//})
 	_ = badgerDB.View(func(txn *badger.Txn) error {
 		opts := badger.DefaultIteratorOptions
 		opts.PrefetchValues = false
