@@ -3,9 +3,11 @@ package client
 import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
+	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
 	"github.com/fabian4/kavicat/event"
+	"path/filepath"
 )
 
 var (
@@ -28,13 +30,14 @@ func Init() {
 }
 
 func NewHome() {
-	buttons := container.NewVBox(
-		widget.NewButton("Establish connection for Redis", newConnectionForRedis),
-		widget.NewButton("Establish connection for Badger", newConnectionForBadger),
-		widget.NewButton("Establish connection for LevelDB", newConnectionForLevelDB),
-	)
-	content := container.NewCenter(buttons)
-	Window.SetContent(content)
+	path, _ := filepath.Abs("./logo.png")
+	img := canvas.NewImageFromFile(path)
+	img.FillMode = canvas.ImageFillOriginal
+	redisButton := widget.NewButton("Establish connection for Redis", newConnectionForRedis)
+	badgerButton := widget.NewButton("Establish connection for Badger", newConnectionForBadger)
+	levelDBButton := widget.NewButton("Establish connection for LevelDB", newConnectionForLevelDB)
+	buttons := container.NewVBox(redisButton, badgerButton, levelDBButton)
+	Window.SetContent(container.NewVBox(img, container.NewCenter(buttons)))
 }
 
 func RegisterEvents() {
