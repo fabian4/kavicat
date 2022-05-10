@@ -1,6 +1,7 @@
 <p align="center">
-<img src="https://user-images.githubusercontent.com/60428924/167528885-6f53e4d7-a029-4d78-977d-1484006e4a63.png" alt="Kingfisher" title="Kingfisher" width="557"/>
+<img src="https://user-images.githubusercontent.com/60428924/167533527-4ce1417b-375c-422b-829c-47d8be238e37.png"/>
 </p>
+
 
 <p align="center">
 <img src="https://img.shields.io/github/workflow/status/fabian4/kavicat/platform%20test">
