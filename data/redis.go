@@ -92,8 +92,6 @@ func SaveRedisValuesByKeyAndValue(key string, value string) {
 func RefreshRedisKeyLists() {
 	redisKeys := getRedisKeys()
 	_ = RedisKeys.Set(redisKeys)
-	_ = RedisKey.Set("")
-	_ = RedisValue.Set("")
 	_ = RedisCount.Set("keys: " + strconv.Itoa(len(redisKeys)))
 	getInfo()
 }
