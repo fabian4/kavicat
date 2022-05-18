@@ -15,4 +15,8 @@
 <img src="https://img.shields.io/github/go-mod/go-version/fabian4/kavicat">
 <img src="https://img.shields.io/github/v/release/fabian4/kavicat">
 <img src="https://img.shields.io/github/release-date/fabian4/kavicat">
+<br />
+<img src="https://svgshare.com/i/Zhy.svg">
+<img src="https://svgshare.com/i/ZjP.svg">
+<img src="https://svgshare.com/i/ZhY.svg">
 </p>
